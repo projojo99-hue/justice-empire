@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUSTICE EMPIRE : Le Tribunal du Chaos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        pixel: ['"Press Start 2P"', 'monospace'],
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        arcade: {
+                            purple: '#180B30',
+                            card: '#241442',
+                            pink: '#FF007F',
+                            cyan: '#00F0FF',
+                            gold: '#FFD700',
+                            red: '#FF3366',
+                            green: '#00FF66'
+                        }
+                    },
+                    keyframes: {
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '20%, 60%': { transform: 'translateX(-6px) rotate(-1deg)' },
+                            '40%, 80%': { transform: 'translateX(6px) rotate(1deg)' },
+                        },
+                        popIn: {
+                            '0%': { transform: 'scale(0.8) translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'scale(1) translateY(0)', opacity: '1' }
+                        }
+                    },
+                    animation: {
+                        shake: 'shake 0.3s ease-in-out',
+                        pop: 'popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0d051b;
+            background-image: 
+                radial-gradient(circle at 50% 20%, #29104d 0%, #0d051b 80%),
+                linear-gradient(to right, rgba(255, 0, 127, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            user-select: none;
+        }
+
+        .stamp-btn {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stamp-btn:active {
+            transform: scale(0.92) translateY(3px);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #FF007F;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="text-slate-100 font-sans min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-arcade-pink selection:text-white">
+
+    <!-- HEADER / HUD GLOBAL -->
+    <header class="border-b border-purple-900/60 bg-arcade-purple/90 backdrop-blur-md sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showScreen('screen-menu')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-arcade-pink to-arcade-cyan flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-pink-500/30">
+                    <i class="fa-solid fa-gavel"></i>
+                </div>
+                <div>
+                    <h1 class="font-pixel text-xs md:text-sm text-arcade-cyan tracking-wider">JUSTICE EMPIRE</h1>
+                    <p class="text-[10px] text-pink-400 font-bold uppercase tracking-widest">Édition Cropanzano et al. (2007)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 bg-slate-950/80 px-4 py-2 rounded-2xl border border-purple-800/60 text-xs md:text-sm">
+                <div class="flex items-center gap-1.5 text-arcade-gold font-bold" title="Pièces de Justice">
+                    <i class="fa-solid fa-coins text-amber-400"></i>
+                    <span id="hud-coins">0</span>
+                </div>
+                <div class="h-4 w-px bg-purple-800"></div>
+                <div class="flex items-center gap-1.5 text-arcade-cyan font-bold" title="Score Global">
+                    <i class="fa-solid fa-star text-cyan-400"></i>
+                    <span id="hud-rep">0</span>
+                </div>
+                <div class="h-4 w-px bg-purple-800"></div>
+                <button onclick="toggleAudio()" id="btn-audio" class="text-slate-400 hover:text-arcade-cyan transition">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-6 w-full flex-grow flex flex-col justify-center">
+
+        <!-- MENU PRINCIPAL -->
+        <section id="screen-menu" class="space-y-8 animate-pop my-auto">
+            <div class="text-center space-y-4 max-w-2xl mx-auto">
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-pixel bg-pink-500/20 text-arcade-pink border border-pink-500/40 animate-pulse">
+                    PSYCHOLOGIE DU TRAVAIL • SIMULATION RH
+                </span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-none">
+                    Maîtrisez la <span class="text-arcade-cyan">JUSTICE</span> Organisationnelle !
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base">
+                    Incarnez le Directeur RH. Résolvez les dilemmes réels fondés sur l'article scientifique de référence et préservez le climat social.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Mode Simulation RH -->
+                <div onclick="initGame('campaign')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-cyan cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-pink-500/20 text-arcade-pink flex items-center justify-center text-2xl group-hover:scale-110 transition border border-pink-500/40">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-cyan transition">Simulation Métier (5 Modules)</h3>
+                        <p class="text-xs text-slate-400">Recrutement, Salaires, Conflits, Licenciements et Évaluations. Alignez vos choix sur la science !</p>
+                    </div>
+                    <div class="mt-6 font-pixel text-[10px] text-arcade-pink flex items-center gap-2">
+                        <span>LANCER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                    </div>
+                </div>
+
+                <!-- Mode Rush -->
+                <div onclick="initGame('rush')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-pink cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-arcade-cyan flex items-center justify-center text-2xl group-hover:scale-110 transition border border-cyan-500/40">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-pink transition">Rush Diagnostic</h3>
+                        <p class="text-xs text-slate-400">Identifiez la forme de justice bafouée en un temps record pour cumuler un maximum de points.</p>
+                    </div>
+                    <div class="mt-6 font-pixel text-[10px] text-arcade-cyan flex items-center gap-2">
+                        <span>JOUER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                    </div>
+                </div>
+
+                <!-- Mode Codex / Révisions -->
+                <div onclick="showScreen('screen-codex')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-gold cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-arcade-gold flex items-center justify-center text-2xl group-hover:scale-110 transition border border-amber-500/40">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-gold transition">Codex Académique</h3>
+                        <p class="text-xs text-slate-400">Révisez les théories clés : Leventhal, Adams, Due Process, Fair Process Effect, Cropanzano (2007).</p>
+                    </div>
+                    <div class="mt-6 font-pixel text-[10px] text-arcade-gold flex items-center gap-2">
+                        <span>CONSULTER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÉCRAN DE JEU -->
+        <section id="screen-game" class="hidden space-y-4 animate-pop">
+            
+            <!-- Barre de statut du jeu -->
+            <div class="bg-arcade-card rounded-2xl p-4 border border-purple-800 flex flex-wrap justify-between items-center gap-4 shadow-xl">
+                <div class="flex items-center gap-3">
+                    <div class="text-center">
+                        <span class="text-[10px] text-slate-400 font-bold block uppercase">Combo</span>
+                        <span id="game-combo" class="font-pixel text-base text-arcade-gold">x1</span>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div id="game-mode-tag" class="text-xs font-pixel text-arcade-cyan">MODULE 1 / 5</div>
+                    <div id="game-sub-tag" class="text-xs text-slate-300 font-semibold">Recrutement & Sélection</div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <span class="text-[10px] text-slate-400 font-bold block uppercase">Climat Social (Chaos)</span>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-skull text-pink-500 text-xs"></i>
+                            <div class="w-24 bg-slate-950 h-3 rounded-full border border-purple-800 overflow-hidden">
+                                <div id="chaos-bar" class="bg-gradient-to-r from-emerald-500 via-amber-500 to-red-500 h-full w-20 transition-all duration-300"></div>
+                            </div>
+                            <span id="chaos-val" class="font-pixel text-xs text-pink-400">20%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARTE DU CAS RH EN COURS -->
+            <div id="card-container" class="relative max-w-xl mx-auto my-4 transition-all duration-300">
+                <div id="case-card" class="bg-gradient-to-b from-arcade-card to-slate-950 rounded-3xl p-6 md:p-8 border-2 border-purple-700/80 shadow-2xl relative overflow-hidden space-y-6">
+                    
+                    <div class="flex justify-between items-center border-b border-purple-800/80 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div id="npc-avatar" class="w-12 h-12 rounded-2xl bg-purple-900/60 border border-purple-600 flex items-center justify-center text-2xl text-arcade-gold">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h4 id="npc-name" class="font-bold text-slate-100 text-base">Comité de Direction</h4>
+                                <p id="case-context" class="text-xs text-pink-400 font-semibold">Sélection de Candidats</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative bg-slate-900/90 p-5 rounded-2xl border border-purple-800 text-slate-200 text-sm md:text-base leading-relaxed font-medium">
+                        <i class="fa-solid fa-quote-left text-purple-700/50 text-3xl absolute -top-3 -left-2 pointer-events-none"></i>
+                        <p id="npc-speech" class="relative z-10">
+                            "Nous devons embaucher un cadre. Pour avoir une validité scientifiquement parfaite, certains veulent imposer des tests cognitifs très abstraits sans explication. Les candidats râlent. Que fait-on ?"
+                        </p>
+                    </div>
+
+                    <div class="text-center text-xs font-bold text-arcade-cyan tracking-wide flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-gavel"></i>
+                        <span>SÉLECTIONNEZ LA DÉCISION MANAGÉRIALE OPTIMALE :</span>
+                    </div>
+
+                </div>
+
+                <!-- OVERLAY FEEDBACK ACADÉMIQUE -->
+                <div id="feedback-overlay" class="hidden absolute inset-0 bg-slate-950/95 backdrop-blur-md rounded-3xl p-6 flex flex-col justify-between border-2 z-20 animate-pop">
+                    <div class="space-y-3">
+                        <div id="feedback-title" class="font-pixel text-sm flex items-center gap-2"></div>
+                        <p id="feedback-desc" class="text-xs md:text-sm text-slate-300 leading-relaxed"></p>
+                        <div id="feedback-citation" class="text-[11px] text-emerald-400 italic font-mono bg-slate-900/80 p-2 rounded-lg border border-emerald-900/50"></div>
+                    </div>
+                    <button onclick="nextCaseCard()" class="w-full py-3 bg-arcade-pink hover:bg-pink-600 text-white font-bold rounded-xl font-pixel text-xs transition shadow-lg shadow-pink-500/30">
+                        AFFAIRE SUIVANTE <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- GRILLE DE CHOIX RH / TAMPONS -->
+            <div class="space-y-2 max-w-3xl mx-auto" id="options-grid">
+                <!-- Injected JS -->
+            </div>
+
+        </section>
+
+        <!-- CODEX ACADÉMIQUE -->
+        <section id="screen-codex" class="hidden space-y-6 animate-pop">
+            <div class="flex justify-between items-center border-b border-purple-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-arcade-cyan font-pixel">CODEX DES THÉORIES (Cropanzano et al., 2007)</h2>
+                    <p class="text-xs text-slate-400">Fondements conceptuels et références scientifiques</p>
+                </div>
+                <button onclick="showScreen('screen-menu')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-purple-700 text-xs font-bold rounded-xl">
+                    <i class="fa-solid fa-arrow-left"></i> Menu
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto custom-scrollbar p-1" id="codex-list"></div>
+        </section>
+
+        <!-- RÉSUMÉ / BILAN FINAL -->
+        <section id="screen-summary" class="hidden space-y-6 text-center max-w-xl mx-auto animate-pop my-auto">
+            <div class="bg-arcade-card p-8 rounded-3xl border-2 border-purple-700 space-y-6 shadow-2xl">
+                <div class="w-20 h-20 bg-pink-500/20 text-arcade-pink rounded-3xl flex items-center justify-center text-4xl mx-auto border border-pink-500/40">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2 class="text-2xl font-pixel text-arcade-gold">EVALUATION FINALE RH</h2>
+                <p id="summary-desc" class="text-xs text-slate-300 leading-relaxed"></p>
+
+                <div class="grid grid-cols-2 gap-4 bg-slate-950 p-4 rounded-2xl border border-purple-800 text-left">
+                    <div>
+                        <span class="text-[10px] text-slate-400 uppercase font-bold block">Note Académique</span>
+                        <span id="summary-score" class="font-pixel text-lg text-arcade-cyan">0 / 20</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-400 uppercase font-bold block">Points Richesse</span>
+                        <span id="summary-coins" class="font-pixel text-lg text-arcade-gold">+0</span>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex gap-3">
+                    <button onclick="showScreen('screen-menu')" class="flex-1 py-3 bg-slate-900 hover:bg-slate-800 border border-purple-700 text-slate-200 font-bold rounded-xl text-xs">
+                        Menu Principal
+                    </button>
+                    <button onclick="initGame('campaign')" class="flex-1 py-3 bg-arcade-pink hover:bg-pink-600 text-white font-bold rounded-xl text-xs font-pixel shadow-lg shadow-pink-500/30">
+                        Recommencer
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // BASE DE DONNÉES EXACTE DE L'ARTICLE DE CROPANZANO, BOWEN & GILLILAND (2007)
+        const CROPANZANO_CASES = [
+            {
+                module: "MODULE 1 : RECRUTEMENT & SÉLECTION",
+                context: "Le Paradoxe de la Justice dans la Sélection",
+                speech: "Vous cherchez à recruter un cadre supérieur. Le comité propose un test d'aptitude cognitive très abstrait (haute validité prédictive), mais les candidats se plaignent d'une intrusion injuste. Que faites-vous ?",
+                options: [
+                    {
+                        text: "Imposer le test abstrait de manière stricte sans explication pour garantir la validité scientifique.",
+                        isCorrect: false,
+                        explanation: "Échec : L'absence d'explications viole la justice informationnelle et interpersonnelle. Les candidats perçoivent le processus comme injuste et risquent de rejeter les offres ou de poursuivre l'entreprise.",
+                        citation: "Ref: Smither et al. (1993) ; Cropanzano et al. (2007)."
+                    },
+                    {
+                        text: "Mettre en place des essais de travail (Work Sample Tests) ou des mises en situation professionnelle réelles.",
+                        isCorrect: true,
+                        explanation: "Succès ! Les mises en situation possèdent une excellente validité prédictive TOUT en offrant une forte justice procédurale perçue car les candidats démontrent directement leurs capacités.",
+                        citation: "Ref: Steiner & Gilliland (1996) ; Roth, Bobko & McFarland (2005)."
+                    },
+                    {
+                        text: "Annuler tout test et faire uniquement un entretien informel non structuré.",
+                        isCorrect: false,
+                        explanation: "Erreur : Bien que l'entretien informel soit apprécié des candidats, sa validité prédictive est proche du hasard et la décision manque de justice procédurale.",
+                        citation: "Ref: Huffcutt & Arthur (1994) ; Latham & Finnegan (1993)."
+                    }
+                ]
+            },
+            {
+                module: "MODULE 2 : SYSTÈMES DE RÉMUNÉRATION",
+                context: "Le Modèle à Deux Facteurs (McFarlin & Sweeney, 1992)",
+                speech: "Les budgets de primes sont coupés de 30%. Vos salariés sont très déçus du montant reçu (faible justice distributive). Comment gérer la situation ?",
+                options: [
+                    {
+                        text: "Annoncer les coupes rapidement par courriel sans donner de justification économique.",
+                        isCorrect: false,
+                        explanation: "Échec : Le manque de transparence et de justice informationnelle provoque une hausse du turnover, des vols d'entreprise et des comportements de sabotage.",
+                        citation: "Ref: Greenberg (1993) ; Ambrose et al. (2002)."
+                    },
+                    {
+                        text: "Appliquer des procédures d'allocation ultra-transparentes et accorder une haute justice procédurale et interactionnelle.",
+                        isCorrect: true,
+                        explanation: "Succès ! Selon le modèle à deux facteurs, une justice procédurale élevée atténue la dissatisfaction liée au salaire et préserve la loyauté et l'engagement envers l'organisation.",
+                        citation: "Ref: McFarlin & Sweeney (1992) ; Cropanzano et al. (2007)."
+                    }
+                ]
+            },
+            {
+                module: "MODULE 3 : GESTION DES CONFLITS",
+                context: "L'Effet du Processus Équitable (Fair Process Effect)",
+                speech: "Deux chefs de service se disputent l'allocation prioritaire d'un budget. Vous devez trancher en tant que directeur (Arbitrage). Comment procéder ?",
+                options: [
+                    {
+                        text: "Trancher immédiatement de façon unilatérale sans écouter leurs arguments.",
+                        isCorrect: false,
+                        explanation: "Échec : Refuser d'accorder le droit de parole ('Voice') détruit la justice procédurale. La partie perdante éprouvera du ressentiment et rejettera la décision.",
+                        citation: "Ref: Cawley, Keeping & Levy (1998)."
+                    },
+                    {
+                        text: "Donner un temps d'audition équitable aux deux parties (Voice), puis expliquer la décision basée sur des critères neutres.",
+                        isCorrect: true,
+                        explanation: "Succès ! C'est le 'Fair Process Effect' : les individus acceptent un résultat défavorable si le processus de décision a été transparent, neutre et respectueux.",
+                        citation: "Ref: Kim & Mauborgne (1991, 2005) ; Goldman (2003)."
+                    }
+                ]
+            },
+            {
+                module: "MODULE 4 : RESTRUCTURATIONS & LICENCIEMENTS",
+                context: "Justice Interactionnelle et Risque Juridique",
+                speech: "L'entreprise doit supprimer 10% des postes pour des raisons financières majeures. Quelle stratégie RH adoptez-vous pour l'annonce ?",
+                options: [
+                    {
+                        text: "Notifier les personnes par lettre recommandée sans réunion explicative pour éviter les conflits.",
+                        isCorrect: false,
+                        explanation: "Échec : La recherche montre que 66% des victimes d'un licenciement mené sans justice interactionnelle/procédurale attaquent l'entreprise en justice.",
+                        citation: "Ref: Lind, Greenberg, Scott & Welchans (2000)."
+                    },
+                    {
+                        text: "Fournir des explications honnêtes et détaillées (Info), traiter chacun avec respect et empathie (Inter), et avertir à l'avance.",
+                        isCorrect: true,
+                        explanation: "Succès ! L'honnêteté et le respect réduisent l'intention de poursuites judiciaires à 16% seulement et préservent la motivation des salariés restants ('Survivors').",
+                        citation: "Ref: Brockner & Greenberg (1990) ; Lind et al. (2000)."
+                    }
+                ]
+            },
+            {
+                module: "MODULE 5 : ÉVALUATION DE LA PERFORMANCE",
+                context: "L'Approche Due Process de l'Évaluation",
+                speech: "Vous devez restructurer les entretiens annuels d'évaluation. Quelle philosophie adoptez-vous ?",
+                options: [
+                    {
+                        text: "Considérer l'évaluation comme un simple test chiffré administré par le supérieur sans contestation possible.",
+                        isCorrect: false,
+                        explanation: "Échec : L'approche purement métrique ('Test Metaphor') suscite l'incompréhension et le sentiment d'opacité.",
+                        citation: "Ref: Banks & Roberson (1985) ; Folger et al. (1992)."
+                    },
+                    {
+                        text: "Instaurer le modèle Due Process : notification des critères à l'avance (Notice), audition bilatérale (Hearing), et jugement sur preuves (Evidence).",
+                        isCorrect: true,
+                        explanation: "Succès ! L'approche 'Due Process' garantit que les employés perçoivent le système comme juste et se sentent motivés à s'améliorer, même avec des notes modérées.",
+                        citation: "Ref: Folger, Konovsky & Cropanzano (1992) ; Taylor et al. (1995)."
+                    }
+                ]
+            }
+        ];
+
+        const CODEX_DATA = [
+            {
+                title: "Justice Distributive (Adams, 1965)",
+                desc: "Perception d'équité dans la répartition des résultats selon la formule des ratios contribution/rétribution. Mobilise 3 règles : Équité (mérite), Égalité (cohésion), et Besoin."
+            },
+            {
+                title: "Justice Procédurale (Leventhal, 1980)",
+                desc: "Équité des processus de décision. Repose sur 6 principes : Consistance, Absence de biais, Exactitude des données, Représentativité (Voice), Corrigeabilité (Recours), et Éthique."
+            },
+            {
+                title: "Justice Interactionnelle (Bies & Moag, 1986)",
+                desc: "Qualité du traitement humain. Se divise en Justice Interpersonnelle (Dignité, Politesse, Respect) et Justice Informationnelle (Explications vraies, opportunes et adéquates)."
+            },
+            {
+                title: "Le Modèle Due Process (Folger et al., 1992)",
+                desc: "Appliqué à l'évaluation de performance. Exige 3 piliers : Notification préalable (Notice), Droit d'audition et de réponse (Hearing), et Jugement basé sur des preuves factuelles (Evidence)."
+            },
+            {
+                title: "L'Effet du Processus Équitable (Kim & Mauborgne, 2005)",
+                desc: "Montre que la loyauté et la coopération volontaire découlent d'un processus perçu comme juste, même si le résultat final est défavorable à l'individu."
+            }
+        ];
+
+        // ÉTAT DU JEU
+        let gameState = {
+            screen: 'screen-menu',
+            coins: 0,
+            reputation: 0,
+            combo: 1,
+            chaos: 20,
+            audioEnabled: true,
+            currentIdx: 0,
+            activeMode: 'campaign'
+        };
+
+        function showScreen(screenId) {
+            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(screenId).classList.remove('hidden');
+            gameState.screen = screenId;
+            if(screenId === 'screen-codex') renderCodex();
+            updateHUD();
+        }
+
+        function updateHUD() {
+            document.getElementById('hud-coins').innerText = gameState.coins;
+            document.getElementById('hud-rep').innerText = gameState.reputation;
+        }
+
+        function initGame(mode) {
+            gameState.activeMode = mode;
+            gameState.combo = 1;
+            gameState.chaos = 20;
+            gameState.currentIdx = 0;
+            gameState.reputation = 0;
+
+            showScreen('screen-game');
+            loadCase();
+        }
+
+        function loadCase() {
+            document.getElementById('feedback-overlay').classList.add('hidden');
+            const c = CROPANZANO_CASES[gameState.currentIdx];
+
+            document.getElementById('game-mode-tag').innerText = `MODULE ${gameState.currentIdx + 1} / ${CROPANZANO_CASES.length}`;
+            document.getElementById('game-sub-tag').innerText = c.module;
+            document.getElementById('case-context').innerText = c.context;
+            document.getElementById('npc-speech').innerText = `"${c.speech}"`;
+
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+
+            c.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "stamp-btn w-full p-4 rounded-2xl bg-arcade-card hover:bg-purple-900 border border-purple-700/80 text-left font-medium text-xs md:text-sm text-slate-200 transition shadow-md flex items-center justify-between gap-3";
+                btn.innerHTML = `<span>${opt.text}</span> <i class="fa-solid fa-chevron-right text-arcade-cyan"></i>`;
+                btn.onclick = () => selectOption(opt);
+                grid.appendChild(btn);
+            });
+
+            updateBars();
+        }
+
+        function selectOption(opt) {
+            const overlay = document.getElementById('feedback-overlay');
+            const title = document.getElementById('feedback-title');
+            const desc = document.getElementById('feedback-desc');
+            const cit = document.getElementById('feedback-citation');
+
+            overlay.classList.remove('hidden');
+
+            if(opt.isCorrect) {
+                gameState.combo++;
+                gameState.reputation += 20 * gameState.combo;
+                gameState.coins += 10;
+                gameState.chaos = Math.max(0, gameState.chaos - 15);
+
+                title.className = "font-pixel text-sm text-emerald-400 flex items-center gap-2";
+                title.innerHTML = `<i class="fa-solid fa-circle-check"></i> EXCELLENT CHOIX MANAGÉRIAL (+${20 * gameState.combo} pts)`;
+            } else {
+                gameState.combo = 1;
+                gameState.chaos = Math.min(100, gameState.chaos + 25);
+
+                title.className = "font-pixel text-sm text-red-400 flex items-center gap-2";
+                title.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ERREUR D'APPRÉCIATION RH`;
+            }
+
+            desc.innerText = opt.explanation;
+            cit.innerText = opt.citation;
+
+            updateBars();
+            updateHUD();
+        }
+
+        function updateBars() {
+            document.getElementById('game-combo').innerText = `x${gameState.combo}`;
+            document.getElementById('chaos-bar').style.width = `${gameState.chaos}%`;
+            document.getElementById('chaos-val').innerText = `${gameState.chaos}%`;
+        }
+
+        function nextCaseCard() {
+            gameState.currentIdx++;
+            if(gameState.currentIdx < CROPANZANO_CASES.length) {
+                loadCase();
+            } else {
+                finishGame();
+            }
+        }
+
+        function finishGame() {
+            showScreen('screen-summary');
+            const finalNote = Math.min(20, (gameState.reputation / 100 * 4 + 10)).toFixed(1);
+            document.getElementById('summary-score').innerText = `${finalNote} / 20`;
+            document.getElementById('summary-coins').innerText = `+${gameState.coins}`;
+
+            let desc = "";
+            if(finalNote >= 16) {
+                desc = "Remarquable ! Vous maîtrisez parfaitement les préceptes de Cropanzano, Bowen & Gilliland (2007). Votre gestion de la justice organisationnelle est scientifiquement irréprochable.";
+            } else {
+                desc = "Bonne tentative, mais certaines décisions ont créé du ressentiment organisationnel. Révisez les concepts dans le Codex !";
+            }
+            document.getElementById('summary-desc').innerText = desc;
+        }
+
+        function renderCodex() {
+            const list = document.getElementById('codex-list');
+            list.innerHTML = '';
+            CODEX_DATA.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-arcade-card p-4 rounded-2xl border border-purple-800 space-y-2";
+                card.innerHTML = `
+                    <h4 class="font-bold text-sm text-arcade-cyan">${item.title}</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed">${item.desc}</p>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function toggleAudio() {
+            gameState.audioEnabled = !gameState.audioEnabled;
+            document.getElementById('btn-audio').innerHTML = gameState.audioEnabled ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark text-red-400"></i>';
+        }
+
+        window.onload = function() {
+            updateHUD();
+        };
+    </script>
+</body>
+</html>
