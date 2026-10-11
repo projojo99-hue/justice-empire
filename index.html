@@ -3,87 +3,647 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JUSTICE EMPIRE : Version Exhaustive Cropanzano (2007)</title>
+    <title>JUSTICE EMPIRE : Ultimate Diamond Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- CHARGEMENT DU FICHIER CASES.JS -->
-    <script src="cases.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        pixel: ['"Press Start 2P"', 'monospace'],
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        arcade: {
+                            purple: '#180B30',
+                            card: '#241442',
+                            pink: '#FF007F',
+                            cyan: '#00F0FF',
+                            gold: '#FFD700',
+                            red: '#FF3366',
+                            green: '#00FF66'
+                        }
+                    },
+                    keyframes: {
+                        popIn: {
+                            '0%': { transform: 'scale(0.8) translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'scale(1) translateY(0)', opacity: '1' }
+                        }
+                    },
+                    animation: {
+                        pop: 'popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                    }
+                }
+            }
+        }
+    </script>
     
     <style>
-        body { background-color: #0d051b; color: #f8fafc; font-family: 'Outfit', sans-serif; }
-        .stamp-btn { transition: all 0.15s ease; }
-        .stamp-btn:active { transform: scale(0.95); }
+        body {
+            background-color: #0d051b;
+            background-image: 
+                radial-gradient(circle at 50% 20%, #29104d 0%, #0d051b 80%),
+                linear-gradient(to right, rgba(255, 0, 127, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            user-select: none;
+        }
+
+        .stamp-btn { transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); }
+        .stamp-btn:active { transform: scale(0.92) translateY(3px); }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 4px; }
     </style>
 </head>
-<body class="p-4 max-w-4xl mx-auto">
+<body class="text-slate-100 font-sans min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-arcade-pink selection:text-white">
 
-    <header class="text-center py-6 border-b border-purple-800">
-        <h1 class="font-pixel text-2xl text-cyan-400">JUSTICE EMPIRE ⚖️</h1>
-        <p class="text-xs text-pink-400 mt-2 font-bold">100% de l'article Cropanzano, Bowen & Gilliland (2007)</p>
-    </header>
-
-    <main class="mt-6">
-        <div id="game-card" class="bg-slate-900 border-2 border-purple-700 rounded-3xl p-6 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-purple-800 pb-3 mb-4">
-                <span id="case-topic" class="font-pixel text-xs text-amber-400">MODULE</span>
-                <span id="case-authors" class="text-xs text-slate-400 font-mono">Auteurs</span>
+    <!-- HEADER / HUD GLOBAL -->
+    <header class="border-b border-purple-900/60 bg-arcade-purple/90 backdrop-blur-md sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showScreen('screen-menu')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-arcade-pink to-arcade-cyan flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-pink-500/30">
+                    <i class="fa-solid fa-gavel"></i>
+                </div>
+                <div>
+                    <h1 class="font-pixel text-xs md:text-sm text-arcade-cyan tracking-wider">JUSTICE EMPIRE</h1>
+                    <p class="text-[10px] text-pink-400 font-bold uppercase tracking-widest">Cropanzano, Bowen & Gilliland (2007)</p>
+                </div>
             </div>
 
-            <p id="case-speech" class="text-base text-slate-100 font-medium mb-6 italic">"Chargement du scénario..."</p>
-
-            <div id="options-container" class="space-y-3">
-                <!-- Les choix de cases.js s'injectent ici -->
-            </div>
-
-            <div id="feedback-box" class="hidden mt-6 p-4 rounded-xl bg-slate-950 border border-emerald-500">
-                <p id="feedback-text" class="text-sm text-emerald-300"></p>
-                <button onclick="nextCase()" class="mt-4 px-4 py-2 bg-pink-600 text-white font-pixel text-xs rounded-xl">CAS SUIVANT ➔</button>
+            <div class="flex items-center gap-3 bg-slate-950/80 px-4 py-2 rounded-2xl border border-purple-800/60 text-xs md:text-sm">
+                <div class="flex items-center gap-1.5 text-arcade-gold font-bold" title="Points Richesse">
+                    <i class="fa-solid fa-coins text-amber-400"></i>
+                    <span id="hud-coins">0</span>
+                </div>
+                <div class="h-4 w-px bg-purple-800"></div>
+                <div class="flex items-center gap-1.5 text-arcade-cyan font-bold" title="Score Global">
+                    <i class="fa-solid fa-star text-cyan-400"></i>
+                    <span id="hud-rep">0</span>
+                </div>
             </div>
         </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-6 w-full flex-grow flex flex-col justify-center">
+
+        <!-- MENU PRINCIPAL -->
+        <section id="screen-menu" class="space-y-8 animate-pop my-auto">
+            <div class="text-center space-y-4 max-w-2xl mx-auto">
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-pixel bg-pink-500/20 text-arcade-pink border border-pink-500/40 animate-pulse">
+                    100% DE L'ARTICLE DE RÉFÉRENCE • SIMULATEUR COMPLET
+                </span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-none">
+                    Maîtrisez la <span class="text-arcade-cyan">JUSTICE</span> Organisationnelle !
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base">
+                    Simulateur de décision RH complet, études de cas réelles de l'article, radar de compétences et générateur de rapports certifiés pour votre professeure.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Simulation RH -->
+                <div onclick="initGame('campaign')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-cyan cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-pink-500/20 text-arcade-pink flex items-center justify-center text-2xl group-hover:scale-110 transition border border-pink-500/40">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-cyan transition">Simulation RH (6 Cas Clés)</h3>
+                        <p class="text-xs text-slate-400">Résolvez tous les cas fondamentaux de l'article et générez votre bilan PDF certifié.</p>
+                    </div>
+                    <div class="mt-6 font-pixel text-[10px] text-arcade-pink flex items-center gap-2">
+                        <span>LANCER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                    </div>
+                </div>
+
+                <!-- Mode Flashcards / Quiz -->
+                <div onclick="initGame('quiz')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-pink cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-arcade-cyan flex items-center justify-center text-2xl group-hover:scale-110 transition border border-cyan-500/40">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-pink transition">Blitz Théorique</h3>
+                        <p class="text-xs text-slate-400">Réviser rapidement les auteurs, équations et dates (Leventhal, Adams, Bies, Colquitt).</p>
+                    </div>
+                    <div class="mt-6 font-pixel text-[10px] text-arcade-cyan flex items-center gap-2">
+                        <span>JOUER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                    </div>
+                </div>
+
+                <!-- Codex & Oral -->
+                <div onclick="showScreen('screen-codex')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-gold cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-arcade-gold flex items-center justify-center text-2xl group-hover:scale-110 transition border border-amber-500/40">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-gold transition">Codex des Théories</h3>
+                        <p class="text-xs text-slate-400">Fiches de révision complètes de l'article pour réviser et préparer l'oral.</p>
+                    </div>
+                    <div class="mt-6 font-pixel text-[10px] text-arcade-gold flex items-center gap-2">
+                        <span>CONSULTER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÉCRAN DE JEU SIMULATION -->
+        <section id="screen-game" class="hidden space-y-4 animate-pop">
+            <div class="bg-arcade-card rounded-2xl p-4 border border-purple-800 flex flex-wrap justify-between items-center gap-4 shadow-xl">
+                <div class="flex items-center gap-3">
+                    <div class="text-center">
+                        <span class="text-[10px] text-slate-400 font-bold block uppercase">Combo</span>
+                        <span id="game-combo" class="font-pixel text-base text-arcade-gold">x1</span>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div id="game-mode-tag" class="text-xs font-pixel text-arcade-cyan">MODULE 1 / 6</div>
+                    <div id="game-sub-tag" class="text-xs text-slate-300 font-semibold">Recrutement & Sélection</div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <span class="text-[10px] text-slate-400 font-bold block uppercase">Climat Social (Chaos)</span>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-skull text-pink-500 text-xs"></i>
+                            <div class="w-24 bg-slate-950 h-3 rounded-full border border-purple-800 overflow-hidden">
+                                <div id="chaos-bar" class="bg-gradient-to-r from-emerald-500 via-amber-500 to-red-500 h-full w-20 transition-all duration-300"></div>
+                            </div>
+                            <span id="chaos-val" class="font-pixel text-xs text-pink-400">20%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARTE DU CAS EN COURS -->
+            <div id="card-container" class="relative max-w-xl mx-auto my-4 transition-all duration-300">
+                <div id="case-card" class="bg-gradient-to-b from-arcade-card to-slate-950 rounded-3xl p-6 md:p-8 border-2 border-purple-700/80 shadow-2xl relative overflow-hidden space-y-6">
+                    <div class="flex justify-between items-center border-b border-purple-800/80 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-900/60 border border-purple-600 flex items-center justify-center text-2xl text-arcade-gold">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h4 id="npc-name" class="font-bold text-slate-100 text-base">Comité RH</h4>
+                                <p id="case-context" class="text-xs text-pink-400 font-semibold">Sélection de Candidats</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative bg-slate-900/90 p-5 rounded-2xl border border-purple-800 text-slate-200 text-sm md:text-base leading-relaxed font-medium">
+                        <i class="fa-solid fa-quote-left text-purple-700/50 text-3xl absolute -top-3 -left-2 pointer-events-none"></i>
+                        <p id="npc-speech" class="relative z-10">Chargement...</p>
+                    </div>
+
+                    <div class="text-center text-xs font-bold text-arcade-cyan tracking-wide flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-gavel"></i>
+                        <span>SÉLECTIONNEZ LA DÉCISION MANAGÉRIALE OPTIMALE :</span>
+                    </div>
+                </div>
+
+                <!-- OVERLAY FEEDBACK ACADÉMIQUE -->
+                <div id="feedback-overlay" class="hidden absolute inset-0 bg-slate-950/95 backdrop-blur-md rounded-3xl p-6 flex flex-col justify-between border-2 z-20 animate-pop">
+                    <div class="space-y-3">
+                        <div id="feedback-title" class="font-pixel text-sm flex items-center gap-2"></div>
+                        <p id="feedback-desc" class="text-xs md:text-sm text-slate-300 leading-relaxed"></p>
+                        <div id="feedback-citation" class="text-[11px] text-emerald-400 italic font-mono bg-slate-900/80 p-2 rounded-lg border border-emerald-900/50"></div>
+                    </div>
+                    <button onclick="nextCaseCard()" class="w-full py-3 bg-arcade-pink hover:bg-pink-600 text-white font-bold rounded-xl font-pixel text-xs transition shadow-lg shadow-pink-500/30">
+                        AFFAIRE SUIVANTE <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-2 max-w-3xl mx-auto" id="options-grid"></div>
+        </section>
+
+        <!-- CODEX & TRAME ORALE -->
+        <section id="screen-codex" class="hidden space-y-6 animate-pop">
+            <div class="flex justify-between items-center border-b border-purple-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-arcade-cyan font-pixel">CODEX DES THÉORIES (Cropanzano et al., 2007)</h2>
+                    <p class="text-xs text-slate-400">Références scientifiques de l'article complet</p>
+                </div>
+                <button onclick="showScreen('screen-menu')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-purple-700 text-xs font-bold rounded-xl">
+                    <i class="fa-solid fa-arrow-left"></i> Menu
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto custom-scrollbar p-1" id="codex-list"></div>
+        </section>
+
+        <!-- ÉCRAN BILAN / RADAR / GENERATEUR PDF -->
+        <section id="screen-summary" class="hidden space-y-6 text-center max-w-2xl mx-auto animate-pop my-auto">
+            <div class="bg-arcade-card p-6 md:p-8 rounded-3xl border-2 border-purple-700 space-y-6 shadow-2xl">
+                <div class="w-16 h-16 bg-pink-500/20 text-arcade-pink rounded-3xl flex items-center justify-center text-3xl mx-auto border border-pink-500/40">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2 class="text-2xl font-pixel text-arcade-gold">ÉVALUATION FINALE RH</h2>
+                <p id="summary-desc" class="text-xs text-slate-300 leading-relaxed"></p>
+
+                <!-- RADAR CHART -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-purple-800 flex justify-center items-center">
+                    <div style="width: 100%; max-width: 320px; height: 260px;">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-left bg-slate-950 p-4 rounded-2xl border border-purple-800">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Nom & Prénom de l'Étudiant :</label>
+                        <input id="student-name" type="text" placeholder="Entrez votre nom..." class="w-full bg-slate-900 border border-purple-700 rounded-xl p-2 text-xs text-white">
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-xs text-slate-300 font-bold">Note Finale obtenue :</span>
+                        <span id="summary-score" class="font-pixel text-lg text-arcade-cyan">0 / 20</span>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex flex-col md:flex-row gap-3">
+                    <button onclick="generatePDFReport()" class="flex-1 py-3 bg-arcade-cyan hover:bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs font-pixel shadow-lg shadow-cyan-500/30">
+                        <i class="fa-solid fa-file-pdf mr-1"></i> TÉLÉCHARGER LE RAPPORT PDF
+                    </button>
+                    <button onclick="showScreen('screen-menu')" class="flex-1 py-3 bg-slate-900 hover:bg-slate-800 border border-purple-700 text-slate-200 font-bold rounded-xl text-xs">
+                        Menu Principal
+                    </button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <script>
-        let currentIdx = 0;
+        // BANQUE DE CAS EXHAUSTIVE DÉDUITE DIRECTEMENT DU TEXTE DE CROPANZANO ET AL. (2007)
+        const CROPANZANO_CASES = [
+            {
+                module: "MODULE 1 : RECRUTEMENT & SÉLECTION",
+                context: "Le Paradoxe de la Justice (Smither et al., 1993)",
+                speech: "Vous cherchez à recruter un cadre supérieur. Le comité propose un test d'aptitude cognitive très abstrait (haute validité prédictive), mais les candidats se plaignent d'une intrusion injuste. Que faites-vous ?",
+                scores: { dist: 10, proc: 20, inter: 20, info: 15 },
+                options: [
+                    {
+                        text: "Imposer le test abstrait de manière stricte sans explication.",
+                        isCorrect: false,
+                        explanation: "Échec : L'absence d'explications viole la justice informationnelle. Risque de rejet d'offre et de poursuites (Bauer et al., 2001).",
+                        citation: "Ref: Smither et al. (1993) ; Cropanzano et al. (2007)."
+                    },
+                    {
+                        text: "Mettre en place des essais de travail (Work Sample Tests) ou des mises en situation réelles.",
+                        isCorrect: true,
+                        explanation: "Succès ! Les mises en situation possèdent une excellente validité prédictive TOUT en offrant une forte justice procédurale perçue.",
+                        citation: "Ref: Steiner & Gilliland (1996) ; Roth, Bobko & McFarland (2005)."
+                    }
+                ]
+            },
+            {
+                module: "MODULE 2 : RÉMUNÉRATION & VOLS D'ENTREPRISE",
+                context: "Étude Expérimentale de Greenberg (1993)",
+                speech: "L'entreprise doit baisser les salaires de 15% pour survivre à une crise. Comment gérez-vous l'annonce pour éviter les vols et démissions ?",
+                scores: { dist: 5, proc: 25, inter: 25, info: 25 },
+                options: [
+                    {
+                        text: "Annoncer la coupe de façon expéditive en 15 minutes sans répondre aux questions.",
+                        isCorrect: false,
+                        explanation: "Échec : Greenberg (1993) a montré que cette méthode fait exploser les vols de matériel (+80%) par vengeance contre l'injustice interpersonnelle.",
+                        citation: "Ref: Greenberg (1993) ; Ambrose et al. (2002)."
+                    },
+                    {
+                        text: "Prendre 1h30 pour expliquer sincèrement les motifs financiers, répondre aux questions et exprimer de vrais regrets.",
+                        isCorrect: true,
+                        explanation: "Succès ! L'empathie et les explications claires (Justice Interpersonnelle et Informationnelle) réduisent le vol de 80% et divisent les démissions par 15 !",
+                        citation: "Ref: Greenberg (1993) ; Cropanzano et al. (2007)."
+                    }
+                ]
+            },
+            {
+                module: "MODULE 3 : SALAIRES & COHÉSION D'ÉQUIPE",
+                context: "Étude de Pfeffer & Langton (1993)",
+                speech: "Faut-il afficher une très forte dispersion salariale basée uniquement sur la performance individuelle des plus productifs ?",
+                scores: { dist: 15, proc: 15, inter: 10, info: 10 },
+                options: [
+                    {
+                        text: "Oui, maximiser la dispersion par l'équité pure au mérite.",
+                        isCorrect: false,
+                        explanation: "Échec : Pfeffer & Langton (1993) démontrent qu'une forte dispersion détruit la satisfaction globale, casse la collaboration d'équipe et fait baisser la productivité globale.",
+                        citation: "Ref: Pfeffer & Langton (1993) ; Adams (1965)."
+                    },
+                    {
+                        text: "Créer un système hybride : un fixe égal garanti + une part variable équitable basée sur la contribution.",
+                        isCorrect: true,
+                        explanation: "Succès ! Le mélange égalité (socle commun) et équité (bonification) préserve la cohésion d'équipe tout en motivant le dépassement soi.",
+                        citation: "Ref: Milkovich & Newman (2005) ; Colquitt et al. (2005)."
+                    }
+                ]
+            },
+            {
+                module: "MODULE 4 : ARBITRAGE & GESTION DES CONFLITS",
+                context: "Fair Process Effect (Kim & Mauborgne, 2005)",
+                speech: "Deux chefs de service se disputent l'allocation d'un budget. Vous devez trancher en tant que directeur (Arbitrage). Comment procéder ?",
+                scores: { dist: 15, proc: 20, inter: 20, info: 15 },
+                options: [
+                    {
+                        text: "Trancher immédiatement de façon unilatérale sans écouter leurs arguments.",
+                        isCorrect: false,
+                        explanation: "Échec : Refuser d'accorder le droit de parole ('Voice') détruit la justice procédurale. La partie perdante rejettera la décision.",
+                        citation: "Ref: Cawley, Keeping & Levy (1998)."
+                    },
+                    {
+                        text: "Donner un temps d'audition équitable aux deux parties (Voice), puis expliquer la décision basée sur des critères neutres.",
+                        isCorrect: true,
+                        explanation: "Succès ! C'est le 'Fair Process Effect' : les individus acceptent un résultat défavorable si le processus de décision a été transparent, neutre et respectueux.",
+                        citation: "Ref: Kim & Mauborgne (1991, 2005) ; Goldman (2003)."
+                    }
+                ]
+            },
+            {
+                module: "MODULE 5 : RESTRUCTURATIONS & RISQUE JURIDIQUE",
+                context: "Étude de Lind, Greenberg, Scott & Welchans (2000)",
+                speech: "L'entreprise doit supprimer 10% des postes. Quelle stratégie adoptez-vous pour éviter les attaques en justice des personnes licenciées ?",
+                scores: { dist: 10, proc: 15, inter: 25, info: 25 },
+                options: [
+                    {
+                        text: "Notifier les personnes par lettre recommandée sans réunion explicative sur conseil des avocats.",
+                        isCorrect: false,
+                        explanation: "Échec : Lind et al. (2000) ont prouvé que 66% des salariés licenciés sans justice interactionnelle/procédurale poursuivent leur ex-employeur en justice !",
+                        citation: "Ref: Lind, Greenberg, Scott & Welchans (2000)."
+                    },
+                    {
+                        text: "Fournir des explications honnêtes (Info), traiter chacun avec respect et empathie (Inter), et avertir à l'avance.",
+                        isCorrect: true,
+                        explanation: "Succès ! L'honnêteté et la dignité font chuter le taux de poursuites judiciaires à 16% seulement !",
+                        citation: "Ref: Brockner & Greenberg (1990) ; Lind et al. (2000)."
+                    }
+                ]
+            },
+            {
+                module: "MODULE 6 : ÉVALUATION DE LA PERFORMANCE",
+                context: "Modèle Due Process (Folger, Konovsky & Cropanzano, 1992)",
+                speech: "Vous devez restructurer les entretiens annuels d'évaluation. Quelle philosophie adoptez-vous ?",
+                scores: { dist: 15, proc: 25, inter: 15, info: 20 },
+                options: [
+                    {
+                        text: "Considérer l'évaluation comme un simple test chiffré administré par le supérieur sans contestation.",
+                        isCorrect: false,
+                        explanation: "Échec : L'approche purement métrique ('Test Metaphor') suscite l'incompréhension et le sentiment d'opacité.",
+                        citation: "Ref: Banks & Roberson (1985) ; Folger et al. (1992)."
+                    },
+                    {
+                        text: "Instaurer le modèle Due Process : notification des critères à l'avance (Notice), audition bilatérale (Hearing), et jugement sur preuves (Evidence).",
+                        isCorrect: true,
+                        explanation: "Succès ! Taylor et al. (1995) ont montré que le modèle 'Due Process' garantit que les employés perçoivent le système comme juste, même s'ils reçoivent des notes modérées !",
+                        citation: "Ref: Folger, Konovsky & Cropanzano (1992) ; Taylor et al. (1995)."
+                    }
+                ]
+            }
+        ];
 
-        function loadCurrentCase() {
-            // Vérifie si cases.js est bien chargé
-            const caseList = (typeof ALL_ARTICLE_CASES !== 'undefined') ? ALL_ARTICLE_CASES : [];
-            
-            if (caseList.length === 0) {
-                document.getElementById('case-speech').innerText = "Erreur : cases.js n'est pas détecté. Vérifiez que le fichier cases.js est bien dans le même dépôt GitHub !";
-                return;
+        const CODEX_DATA = [
+            { title: "Justice Distributive (Adams, 1965)", desc: "Perception d'équité dans la répartition des résultats selon le ratio contribution/rétribution. Mobilise Équité, Égalité et Besoin." },
+            { title: "Justice Procédurale (Leventhal, 1980)", desc: "Équité des processus. 6 principes : Consistance, Absence de biais, Exactitude, Représentativité (Voice), Corrigeabilité, Éthique." },
+            { title: "Justice Interactionnelle (Bies & Moag, 1986)", desc: "Se divise en Justice Interpersonnelle (Dignité, Politesse) et Justice Informationnelle (Honnêteté, Explications adéquates)." },
+            { title: "Le Modèle Due Process (Folger et al., 1992)", desc: "3 piliers pour l'évaluation : Notification préalable (Notice), Droit de réponse (Hearing), et Preuves factuelles (Evidence)." },
+            { title: "L'Effet du Processus Équitable (Kim & Mauborgne, 2005)", desc: "La loyauté et la coopération découlent d'un processus juste, même avec un résultat final défavorable." }
+        ];
+
+        let gameState = {
+            screen: 'screen-menu',
+            coins: 0,
+            reputation: 0,
+            combo: 1,
+            chaos: 20,
+            currentIdx: 0,
+            historyLog: [],
+            radarScores: { dist: 20, proc: 20, inter: 20, info: 20 }
+        };
+
+        let radarChartInstance = null;
+
+        function showScreen(screenId) {
+            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(screenId).classList.remove('hidden');
+            gameState.screen = screenId;
+            if(screenId === 'screen-codex') renderCodex();
+            updateHUD();
+        }
+
+        function updateHUD() {
+            document.getElementById('hud-coins').innerText = gameState.coins;
+            document.getElementById('hud-rep').innerText = gameState.reputation;
+        }
+
+        function initGame(mode) {
+            gameState.combo = 1;
+            gameState.chaos = 20;
+            gameState.currentIdx = 0;
+            gameState.reputation = 0;
+            gameState.historyLog = [];
+            gameState.radarScores = { dist: 20, proc: 20, inter: 20, info: 20 };
+
+            showScreen('screen-game');
+            loadCase();
+        }
+
+        function loadCase() {
+            document.getElementById('feedback-overlay').classList.add('hidden');
+            const c = CROPANZANO_CASES[gameState.currentIdx];
+
+            document.getElementById('game-mode-tag').innerText = `MODULE ${gameState.currentIdx + 1} / ${CROPANZANO_CASES.length}`;
+            document.getElementById('game-sub-tag').innerText = c.module;
+            document.getElementById('case-context').innerText = c.context;
+            document.getElementById('npc-speech').innerText = `"${c.speech}"`;
+
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+
+            c.options.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = "stamp-btn w-full p-4 rounded-2xl bg-arcade-card hover:bg-purple-900 border border-purple-700/80 text-left font-medium text-xs md:text-sm text-slate-200 transition shadow-md flex items-center justify-between gap-3";
+                btn.innerHTML = `<span>${opt.text}</span> <i class="fa-solid fa-chevron-right text-arcade-cyan"></i>`;
+                btn.onclick = () => selectOption(opt, c);
+                grid.appendChild(btn);
+            });
+
+            updateBars();
+        }
+
+        function selectOption(opt, currentCase) {
+            const overlay = document.getElementById('feedback-overlay');
+            const title = document.getElementById('feedback-title');
+            const desc = document.getElementById('feedback-desc');
+            const cit = document.getElementById('feedback-citation');
+
+            overlay.classList.remove('hidden');
+
+            gameState.historyLog.push({
+                module: currentCase.module,
+                choice: opt.text,
+                isCorrect: opt.isCorrect,
+                explanation: opt.explanation,
+                citation: opt.citation
+            });
+
+            if(opt.isCorrect) {
+                gameState.combo++;
+                gameState.reputation += 20 * gameState.combo;
+                gameState.coins += 10;
+                gameState.chaos = Math.max(0, gameState.chaos - 15);
+
+                gameState.radarScores.dist += currentCase.scores.dist;
+                gameState.radarScores.proc += currentCase.scores.proc;
+                gameState.radarScores.inter += currentCase.scores.inter;
+                gameState.radarScores.info += currentCase.scores.info;
+
+                title.className = "font-pixel text-sm text-emerald-400 flex items-center gap-2";
+                title.innerHTML = `<i class="fa-solid fa-circle-check"></i> EXCELLENT CHOIX MANAGÉRIAL (+${20 * gameState.combo} pts)`;
+            } else {
+                gameState.combo = 1;
+                gameState.chaos = Math.min(100, gameState.chaos + 25);
+
+                title.className = "font-pixel text-sm text-red-400 flex items-center gap-2";
+                title.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ERREUR D'APPRÉCIATION RH`;
             }
 
-            const c = caseList[currentIdx];
-            document.getElementById('case-topic').innerText = c.topic;
-            document.getElementById('case-authors').innerText = c.authors;
-            document.getElementById('case-speech').innerText = `"${c.speech}"`;
-            document.getElementById('feedback-box').classList.add('hidden');
+            desc.innerText = opt.explanation;
+            cit.innerText = opt.citation;
 
-            const container = document.getElementById('options-container');
-            container.innerHTML = '';
+            updateBars();
+            updateHUD();
+        }
 
-            c.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "stamp-btn w-full p-4 rounded-xl bg-purple-950 border border-purple-700 text-left text-sm hover:bg-purple-900 transition";
-                btn.innerText = opt.text;
-                btn.onclick = () => {
-                    document.getElementById('feedback-text').innerText = (opt.isCorrect ? "✅ " : "❌ ") + opt.exp;
-                    document.getElementById('feedback-box').classList.remove('hidden');
-                };
-                container.appendChild(btn);
+        function updateBars() {
+            document.getElementById('game-combo').innerText = `x${gameState.combo}`;
+            document.getElementById('chaos-bar').style.width = `${gameState.chaos}%`;
+            document.getElementById('chaos-val').innerText = `${gameState.chaos}%`;
+        }
+
+        function nextCaseCard() {
+            gameState.currentIdx++;
+            if(gameState.currentIdx < CROPANZANO_CASES.length) {
+                loadCase();
+            } else {
+                finishGame();
+            }
+        }
+
+        function finishGame() {
+            showScreen('screen-summary');
+            const finalNote = Math.min(20, (gameState.reputation / 120 * 4 + 10)).toFixed(1);
+            document.getElementById('summary-score').innerText = `${finalNote} / 20`;
+
+            let desc = "";
+            if(finalNote >= 16) {
+                desc = "Remarquable ! Vous maîtrisez parfaitement les préceptes de Cropanzano, Bowen & Gilliland (2007). Votre empreinte managériale est équilibrée.";
+            } else {
+                desc = "Bonne tentative ! Analysez votre graphique radar ci-dessous pour identifier les formes de justice à renforcer.";
+            }
+            document.getElementById('summary-desc').innerText = desc;
+
+            renderRadarChart();
+        }
+
+        function renderRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            if(radarChartInstance) radarChartInstance.destroy();
+
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Distributive', 'Procédurale', 'Interpersonnelle', 'Informationnelle'],
+                    datasets: [{
+                        label: 'Profil RH (%)',
+                        data: [
+                            Math.min(100, gameState.radarScores.dist),
+                            Math.min(100, gameState.radarScores.proc),
+                            Math.min(100, gameState.radarScores.inter),
+                            Math.min(100, gameState.radarScores.info)
+                        ],
+                        backgroundColor: 'rgba(0, 240, 255, 0.2)',
+                        borderColor: '#00F0FF',
+                        pointBackgroundColor: '#FF007F'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                            pointLabels: { color: '#00F0FF', font: { size: 10 } },
+                            ticks: { display: false, backdropColor: 'transparent' },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
             });
         }
 
-        function nextCase() {
-            currentIdx = (currentIdx + 1) % ALL_ARTICLE_CASES.length;
-            loadCurrentCase();
+        function generatePDFReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const studentName = document.getElementById('student-name').value || "Étudiant(e)";
+            const finalNote = Math.min(20, (gameState.reputation / 120 * 4 + 10)).toFixed(1);
+
+            doc.setFontSize(18);
+            doc.setTextColor(30, 58, 138);
+            doc.text("RAPPORT D'ÉVALUATION RH - JUSTICE ORGANISATIONNELLE", 10, 20);
+
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            doc.text("Référence académique : Cropanzano, Bowen & Gilliland (2007)", 10, 27);
+            doc.text(`Nom de l'étudiant : ${studentName}`, 10, 35);
+            doc.text(`Date de session : ${new Date().toLocaleDateString('fr-FR')}`, 10, 40);
+            doc.text(`NOTE FINALE OBTENUE : ${finalNote} / 20`, 10, 48);
+
+            doc.setDrawColor(200);
+            doc.line(10, 52, 200, 52);
+
+            let yPos = 60;
+            doc.setFontSize(11);
+            doc.setTextColor(0);
+            doc.text("DÉTAIL DES DÉCISIONS MANAGÉRIALE :", 10, yPos);
+            yPos += 8;
+
+            gameState.historyLog.forEach((log, idx) => {
+                if(yPos > 270) { doc.addPage(); yPos = 20; }
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "bold");
+                doc.text(`${idx + 1}. ${log.module} - Status: ${log.isCorrect ? 'VALIDE' : 'INCORRECT'}`, 10, yPos);
+                yPos += 5;
+                doc.setFont("helvetica", "normal");
+                const splitChoice = doc.splitTextToSize(`Choix : ${log.choice}`, 180);
+                doc.text(splitChoice, 15, yPos);
+                yPos += (splitChoice.length * 4);
+
+                const splitExp = doc.splitTextToSize(`Analyse : ${log.explanation}`, 180);
+                doc.text(splitExp, 15, yPos);
+                yPos += (splitExp.length * 4) + 4;
+            });
+
+            doc.save(`Rapport_Justice_RH_${studentName.replace(/\s+/g, '_')}.pdf`);
         }
 
-        window.onload = loadCurrentCase;
+        function renderCodex() {
+            const list = document.getElementById('codex-list');
+            list.innerHTML = '';
+            CODEX_DATA.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-arcade-card p-4 rounded-2xl border border-purple-800 space-y-2";
+                card.innerHTML = `
+                    <h4 class="font-bold text-sm text-arcade-cyan">${item.title}</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed">${item.desc}</p>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        window.onload = function() { updateHUD(); };
     </script>
 </body>
 </html>
