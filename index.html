@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JUSTICE EMPIRE : Ultimate Academic Edition</title>
+    <title>JUSTICE EMPIRE : Ultimate Diamond Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <script>
         tailwind.config = {
@@ -71,7 +72,7 @@
                 </div>
                 <div>
                     <h1 class="font-pixel text-xs md:text-sm text-arcade-cyan tracking-wider">JUSTICE EMPIRE</h1>
-                    <p class="text-[10px] text-pink-400 font-bold uppercase tracking-widest">Cropanzano, Bowen & Gilliland (2007)</p>
+                    <p class="text-[10px] text-pink-400 font-bold uppercase tracking-widest">Diamond Edition • Cropanzano et al. (2007)</p>
                 </div>
             </div>
 
@@ -95,56 +96,56 @@
         <section id="screen-menu" class="space-y-8 animate-pop my-auto">
             <div class="text-center space-y-4 max-w-2xl mx-auto">
                 <span class="inline-block px-3 py-1 rounded-full text-xs font-pixel bg-pink-500/20 text-arcade-pink border border-pink-500/40 animate-pulse">
-                    PSYCHOLOGIE DU TRAVAIL • SUITE PÉDAGOGIQUE COMPLETE
+                    PSYCHOLOGIE DU TRAVAIL • PLATEFORME GLOBALE
                 </span>
                 <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-none">
                     Maîtrisez la <span class="text-arcade-cyan">JUSTICE</span> Organisationnelle !
                 </h2>
                 <p class="text-slate-300 text-sm md:text-base">
-                    Simulateur de décision RH basé sur la littérature scientifique de référence. Apprenez tout l'article en jouant !
+                    Simulateur de décision RH complet, études de cas réelles, radar de compétences et générateur de rapports certifiés.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Mode Simulation RH -->
+                <!-- Simulation RH -->
                 <div onclick="initGame('campaign')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-cyan cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
                     <div class="space-y-3">
                         <div class="w-12 h-12 rounded-2xl bg-pink-500/20 text-arcade-pink flex items-center justify-center text-2xl group-hover:scale-110 transition border border-pink-500/40">
                             <i class="fa-solid fa-crown"></i>
                         </div>
                         <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-cyan transition">Simulation RH (5 Modules)</h3>
-                        <p class="text-xs text-slate-400">Résolvez les 5 cas réels d'entreprise et générez votre rapport PDF pour la prof.</p>
+                        <p class="text-xs text-slate-400">Résolvez les cas d'entreprise et visualisez votre graphique radar de compétences managériales.</p>
                     </div>
                     <div class="mt-6 font-pixel text-[10px] text-arcade-pink flex items-center gap-2">
                         <span>LANCER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
                     </div>
                 </div>
 
-                <!-- Blitz Flashcards -->
-                <div onclick="initBlitz()" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-pink cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                <!-- Cas Réels d'Entreprises -->
+                <div onclick="initGame('real_cases')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-pink cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
                     <div class="space-y-3">
                         <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-arcade-cyan flex items-center justify-center text-2xl group-hover:scale-110 transition border border-cyan-500/40">
-                            <i class="fa-solid fa-bolt"></i>
+                            <i class="fa-solid fa-building"></i>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-pink transition">Blitz Flashcards</h3>
-                        <p class="text-xs text-slate-400">Réponses rapides sur les auteurs, dates et concepts théoriques clés.</p>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-pink transition">Cas Réels (Amazon, Danone)</h3>
+                        <p class="text-xs text-slate-400">Analysez de vraies crises d'entreprises à la lumière de Cropanzano et al. (2007).</p>
                     </div>
                     <div class="mt-6 font-pixel text-[10px] text-arcade-cyan flex items-center gap-2">
-                        <span>S'ENTRAÎNER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                        <span>EXPLORER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
                     </div>
                 </div>
 
-                <!-- Codex Académique -->
+                <!-- Codex & Oral -->
                 <div onclick="showScreen('screen-codex')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-gold cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
                     <div class="space-y-3">
                         <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-arcade-gold flex items-center justify-center text-2xl group-hover:scale-110 transition border border-amber-500/40">
                             <i class="fa-solid fa-book-open"></i>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-gold transition">Codex des Théories</h3>
-                        <p class="text-xs text-slate-400">Révisez Leventhal, Adams, Due Process, Fair Process Effect et Cropanzano (2007).</p>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-gold transition">Codex & Trame Oral</h3>
+                        <p class="text-xs text-slate-400">Révisez les théories clés et téléchargez votre trame de présentation pour la soutenance.</p>
                     </div>
                     <div class="mt-6 font-pixel text-[10px] text-arcade-gold flex items-center gap-2">
-                        <span>RÉVISER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                        <span>CONSULTER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
                     </div>
                 </div>
             </div>
@@ -221,12 +222,12 @@
             <div class="space-y-2 max-w-3xl mx-auto" id="options-grid"></div>
         </section>
 
-        <!-- CODEX ACADÉMIQUE -->
+        <!-- CODEX & TRAME ORALE -->
         <section id="screen-codex" class="hidden space-y-6 animate-pop">
             <div class="flex justify-between items-center border-b border-purple-800 pb-4">
                 <div>
-                    <h2 class="text-2xl font-bold text-arcade-cyan font-pixel">CODEX DES THÉORIES (Cropanzano et al., 2007)</h2>
-                    <p class="text-xs text-slate-400">Références scientifiques et théories organisationnelles</p>
+                    <h2 class="text-2xl font-bold text-arcade-cyan font-pixel">CODEX & TRAME SOUTENANCE ORALE</h2>
+                    <p class="text-xs text-slate-400">Références scientifiques et guide pour l'exposé</p>
                 </div>
                 <button onclick="showScreen('screen-menu')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-purple-700 text-xs font-bold rounded-xl">
                     <i class="fa-solid fa-arrow-left"></i> Menu
@@ -235,14 +236,21 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto custom-scrollbar p-1" id="codex-list"></div>
         </section>
 
-        <!-- ÉCRAN BILAN ET GÉNÉRATEUR PDF -->
-        <section id="screen-summary" class="hidden space-y-6 text-center max-w-xl mx-auto animate-pop my-auto">
-            <div class="bg-arcade-card p-8 rounded-3xl border-2 border-purple-700 space-y-6 shadow-2xl">
-                <div class="w-20 h-20 bg-pink-500/20 text-arcade-pink rounded-3xl flex items-center justify-center text-4xl mx-auto border border-pink-500/40">
+        <!-- ÉCRAN BILAN / RADAR / GENERATEUR PDF -->
+        <section id="screen-summary" class="hidden space-y-6 text-center max-w-2xl mx-auto animate-pop my-auto">
+            <div class="bg-arcade-card p-6 md:p-8 rounded-3xl border-2 border-purple-700 space-y-6 shadow-2xl">
+                <div class="w-16 h-16 bg-pink-500/20 text-arcade-pink rounded-3xl flex items-center justify-center text-3xl mx-auto border border-pink-500/40">
                     <i class="fa-solid fa-graduation-cap"></i>
                 </div>
-                <h2 class="text-2xl font-pixel text-arcade-gold">EVALUATION FINALE RH</h2>
+                <h2 class="text-2xl font-pixel text-arcade-gold">ÉVALUATION FINALE RH</h2>
                 <p id="summary-desc" class="text-xs text-slate-300 leading-relaxed"></p>
+
+                <!-- RADAR CHART -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-purple-800 flex justify-center items-center">
+                    <div style="width: 100%; max-width: 320px; height: 260px;">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
 
                 <div class="space-y-3 text-left bg-slate-950 p-4 rounded-2xl border border-purple-800">
                     <div>
@@ -274,6 +282,7 @@
                 module: "MODULE 1 : RECRUTEMENT & SÉLECTION",
                 context: "Le Paradoxe de la Justice dans la Sélection",
                 speech: "Vous cherchez à recruter un cadre supérieur. Le comité propose un test d'aptitude cognitive très abstrait (haute validité prédictive), mais les candidats se plaignent d'une intrusion injuste. Que faites-vous ?",
+                scores: { dist: 10, proc: 20, inter: 20, info: 15 },
                 options: [
                     {
                         text: "Imposer le test abstrait de manière stricte sans explication.",
@@ -293,6 +302,7 @@
                 module: "MODULE 2 : SYSTÈMES DE RÉMUNÉRATION",
                 context: "Le Modèle à Deux Facteurs (McFarlin & Sweeney, 1992)",
                 speech: "Les budgets de primes sont coupés de 30%. Vos salariés sont très déçus du montant reçu (faible justice distributive). Comment gérer la situation ?",
+                scores: { dist: 5, proc: 25, inter: 20, info: 20 },
                 options: [
                     {
                         text: "Annoncer les coupes rapidement par courriel sans donner de justification économique.",
@@ -312,6 +322,7 @@
                 module: "MODULE 3 : GESTION DES CONFLITS",
                 context: "L'Effet du Processus Équitable (Fair Process Effect)",
                 speech: "Deux chefs de service se disputent l'allocation prioritaire d'un budget. Vous devez trancher en tant que directeur (Arbitrage). Comment procéder ?",
+                scores: { dist: 15, proc: 20, inter: 20, info: 15 },
                 options: [
                     {
                         text: "Trancher immédiatement de façon unilatérale sans écouter leurs arguments.",
@@ -331,6 +342,7 @@
                 module: "MODULE 4 : RESTRUCTURATIONS & LICENCIEMENTS",
                 context: "Justice Interactionnelle et Risque Juridique",
                 speech: "L'entreprise doit supprimer 10% des postes pour des raisons financières majeures. Quelle stratégie RH adoptez-vous pour l'annonce ?",
+                scores: { dist: 10, proc: 15, inter: 25, info: 25 },
                 options: [
                     {
                         text: "Notifier les personnes par lettre recommandée sans réunion explicative.",
@@ -350,6 +362,7 @@
                 module: "MODULE 5 : ÉVALUATION DE LA PERFORMANCE",
                 context: "L'Approche Due Process de l'Évaluation",
                 speech: "Vous devez restructurer les entretiens annuels d'évaluation. Quelle philosophie adoptez-vous ?",
+                scores: { dist: 15, proc: 25, inter: 15, info: 20 },
                 options: [
                     {
                         text: "Considérer l'évaluation comme un simple test chiffré administré par le supérieur sans contestation.",
@@ -382,8 +395,11 @@
             combo: 1,
             chaos: 20,
             currentIdx: 0,
-            historyLog: []
+            historyLog: [],
+            radarScores: { dist: 20, proc: 20, inter: 20, info: 20 }
         };
+
+        let radarChartInstance = null;
 
         function showScreen(screenId) {
             document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
@@ -404,6 +420,7 @@
             gameState.currentIdx = 0;
             gameState.reputation = 0;
             gameState.historyLog = [];
+            gameState.radarScores = { dist: 20, proc: 20, inter: 20, info: 20 };
 
             showScreen('screen-game');
             loadCase();
@@ -454,6 +471,11 @@
                 gameState.coins += 10;
                 gameState.chaos = Math.max(0, gameState.chaos - 15);
 
+                gameState.radarScores.dist += currentCase.scores.dist;
+                gameState.radarScores.proc += currentCase.scores.proc;
+                gameState.radarScores.inter += currentCase.scores.inter;
+                gameState.radarScores.info += currentCase.scores.info;
+
                 title.className = "font-pixel text-sm text-emerald-400 flex items-center gap-2";
                 title.innerHTML = `<i class="fa-solid fa-circle-check"></i> EXCELLENT CHOIX MANAGÉRIAL (+${20 * gameState.combo} pts)`;
             } else {
@@ -493,11 +515,52 @@
 
             let desc = "";
             if(finalNote >= 16) {
-                desc = "Remarquable ! Vous maîtrisez parfaitement les préceptes de Cropanzano, Bowen & Gilliland (2007). Votre rapport certifié est prêt à être téléchargé.";
+                desc = "Remarquable ! Vous maîtrisez parfaitement les préceptes de Cropanzano, Bowen & Gilliland (2007). Votre empreinte managériale est équilibrée.";
             } else {
-                desc = "Bonne tentative ! Téléchargez votre bilan pour réviser les notions à renforcer.";
+                desc = "Bonne tentative ! Analysez votre graphique radar ci-dessous pour identifier les formes de justice à renforcer.";
             }
             document.getElementById('summary-desc').innerText = desc;
+
+            renderRadarChart();
+        }
+
+        function renderRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            if(radarChartInstance) radarChartInstance.destroy();
+
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Distributive', 'Procédurale', 'Interpersonnelle', 'Informationnelle'],
+                    datasets: [{
+                        label: 'Profil RH (%)',
+                        data: [
+                            Math.min(100, gameState.radarScores.dist),
+                            Math.min(100, gameState.radarScores.proc),
+                            Math.min(100, gameState.radarScores.inter),
+                            Math.min(100, gameState.radarScores.info)
+                        ],
+                        backgroundColor: 'rgba(0, 240, 255, 0.2)',
+                        borderColor: '#00F0FF',
+                        pointBackgroundColor: '#FF007F'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                            pointLabels: { color: '#00F0FF', font: { size: 10 } },
+                            ticks: { display: false, backdropColor: 'transparent' },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
         }
 
         function generatePDFReport() {
