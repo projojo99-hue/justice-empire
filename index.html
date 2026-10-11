@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JUSTICE EMPIRE : Ultimate Gold Edition</title>
+    <title>JUSTICE EMPIRE : Ultimate Academic Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -53,25 +53,16 @@
             user-select: none;
         }
 
-        .stamp-btn {
-            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .stamp-btn:active {
-            transform: scale(0.92) translateY(3px);
-        }
+        .stamp-btn { transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); }
+        .stamp-btn:active { transform: scale(0.92) translateY(3px); }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #FF007F;
-            border-radius: 4px;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 4px; }
     </style>
 </head>
 <body class="text-slate-100 font-sans min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-arcade-pink selection:text-white">
 
-    <!-- HEADER GLOBAL HUD -->
+    <!-- HEADER / HUD GLOBAL -->
     <header class="border-b border-purple-900/60 bg-arcade-purple/90 backdrop-blur-md sticky top-0 z-50 px-4 py-3">
         <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-2">
             <div class="flex items-center gap-3 cursor-pointer" onclick="showScreen('screen-menu')">
@@ -80,7 +71,7 @@
                 </div>
                 <div>
                     <h1 class="font-pixel text-xs md:text-sm text-arcade-cyan tracking-wider">JUSTICE EMPIRE</h1>
-                    <p class="text-[10px] text-pink-400 font-bold uppercase tracking-widest">Ultimate Gold Edition • Cropanzano et al. (2007)</p>
+                    <p class="text-[10px] text-pink-400 font-bold uppercase tracking-widest">Cropanzano, Bowen & Gilliland (2007)</p>
                 </div>
             </div>
 
@@ -94,17 +85,13 @@
                     <i class="fa-solid fa-star text-cyan-400"></i>
                     <span id="hud-rep">0</span>
                 </div>
-                <div class="h-4 w-px bg-purple-800"></div>
-                <button onclick="toggleAudio()" id="btn-audio" class="text-slate-400 hover:text-arcade-cyan transition">
-                    <i class="fa-solid fa-volume-high"></i>
-                </button>
             </div>
         </div>
     </header>
 
     <main class="max-w-5xl mx-auto px-4 py-6 w-full flex-grow flex flex-col justify-center">
 
-        <!-- ÉCRAN DU MENU PRINCIPAL -->
+        <!-- MENU PRINCIPAL -->
         <section id="screen-menu" class="space-y-8 animate-pop my-auto">
             <div class="text-center space-y-4 max-w-2xl mx-auto">
                 <span class="inline-block px-3 py-1 rounded-full text-xs font-pixel bg-pink-500/20 text-arcade-pink border border-pink-500/40 animate-pulse">
@@ -114,36 +101,36 @@
                     Maîtrisez la <span class="text-arcade-cyan">JUSTICE</span> Organisationnelle !
                 </h2>
                 <p class="text-slate-300 text-sm md:text-base">
-                    Simulateur de décision RH, générateur de rapports certifiés pour enseignants et éditeur de scénarios.
+                    Simulateur de décision RH basé sur la littérature scientifique de référence. Apprenez tout l'article en jouant !
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Simulation RH -->
+                <!-- Mode Simulation RH -->
                 <div onclick="initGame('campaign')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-cyan cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
                     <div class="space-y-3">
                         <div class="w-12 h-12 rounded-2xl bg-pink-500/20 text-arcade-pink flex items-center justify-center text-2xl group-hover:scale-110 transition border border-pink-500/40">
                             <i class="fa-solid fa-crown"></i>
                         </div>
                         <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-cyan transition">Simulation RH (5 Modules)</h3>
-                        <p class="text-xs text-slate-400">Résolvez les 5 cas d'entreprise réels et générez votre rapport PDF certifié à rendre au professeur.</p>
+                        <p class="text-xs text-slate-400">Résolvez les 5 cas réels d'entreprise et générez votre rapport PDF pour la prof.</p>
                     </div>
                     <div class="mt-6 font-pixel text-[10px] text-arcade-pink flex items-center gap-2">
                         <span>LANCER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
                     </div>
                 </div>
 
-                <!-- Éditeur de Scénarios -->
-                <div onclick="showScreen('screen-editor')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-pink cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                <!-- Blitz Flashcards -->
+                <div onclick="initBlitz()" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-pink cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
                     <div class="space-y-3">
                         <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-arcade-cyan flex items-center justify-center text-2xl group-hover:scale-110 transition border border-cyan-500/40">
-                            <i class="fa-solid fa-sliders"></i>
+                            <i class="fa-solid fa-bolt"></i>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-pink transition">Éditeur de Cas (Prof)</h3>
-                        <p class="text-xs text-slate-400">Créez vos propres cas de justice organisationnelle et exportez-les au format JSON pour vos cours.</p>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-pink transition">Blitz Flashcards</h3>
+                        <p class="text-xs text-slate-400">Réponses rapides sur les auteurs, dates et concepts théoriques clés.</p>
                     </div>
                     <div class="mt-6 font-pixel text-[10px] text-arcade-cyan flex items-center gap-2">
-                        <span>CRÉER / ÉDITER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                        <span>S'ENTRAÎNER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
                     </div>
                 </div>
 
@@ -153,11 +140,11 @@
                         <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-arcade-gold flex items-center justify-center text-2xl group-hover:scale-110 transition border border-amber-500/40">
                             <i class="fa-solid fa-book-open"></i>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-gold transition">Codex des 7 Justices</h3>
-                        <p class="text-xs text-slate-400">Révisez Leventhal, Adams, Due Process, Fair Process Effect et Cropanzano et al. (2007).</p>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-gold transition">Codex des Théories</h3>
+                        <p class="text-xs text-slate-400">Révisez Leventhal, Adams, Due Process, Fair Process Effect et Cropanzano (2007).</p>
                     </div>
                     <div class="mt-6 font-pixel text-[10px] text-arcade-gold flex items-center gap-2">
-                        <span>REVISER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                        <span>RÉVISER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
                     </div>
                 </div>
             </div>
@@ -231,57 +218,14 @@
                 </div>
             </div>
 
-            <!-- CHOIX RH -->
             <div class="space-y-2 max-w-3xl mx-auto" id="options-grid"></div>
         </section>
 
-        <!-- ÉCRAN ÉDITEUR DE SCÉNARIOS -->
-        <section id="screen-editor" class="hidden space-y-6 animate-pop">
-            <div class="flex justify-between items-center border-b border-purple-800 pb-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-arcade-pink font-pixel">ÉDITEUR DE CAS D'ÉTUDE</h2>
-                    <p class="text-xs text-slate-400">Créez et exportez des scénarios de cours personnalisés</p>
-                </div>
-                <button onclick="showScreen('screen-menu')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-purple-700 text-xs font-bold rounded-xl">
-                    <i class="fa-solid fa-arrow-left"></i> Menu
-                </button>
-            </div>
-
-            <div class="bg-arcade-card p-6 rounded-3xl border border-purple-800 space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">Titre du Module / Thème :</label>
-                        <input id="edit-module" type="text" placeholder="ex: Module Rémunération Équitable" class="w-full bg-slate-950 border border-purple-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-arcade-cyan">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">Contexte RH :</label>
-                        <input id="edit-context" type="text" placeholder="ex: Attribution des Primes de Fin d'Année" class="w-full bg-slate-950 border border-purple-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-arcade-cyan">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Situation / Dilemme d'Entreprise :</label>
-                    <textarea id="edit-speech" rows="3" placeholder="Décrivez la situation posée au manager..." class="w-full bg-slate-950 border border-purple-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-arcade-cyan"></textarea>
-                </div>
-
-                <div class="border-t border-purple-800/80 pt-4 space-y-3">
-                    <h4 class="font-bold text-xs text-arcade-cyan">Option d'Action n°1 (Correcte / Académique) :</h4>
-                    <input id="edit-opt1-text" type="text" placeholder="Action managériale équitable..." class="w-full bg-slate-950 border border-purple-700 rounded-xl p-3 text-xs text-white">
-                    <input id="edit-opt1-exp" type="text" placeholder="Explication théorique..." class="w-full bg-slate-950 border border-purple-700 rounded-xl p-3 text-xs text-white">
-                    <input id="edit-opt1-cit" type="text" placeholder="Citation scientifique (ex: Cropanzano et al., 2007)..." class="w-full bg-slate-950 border border-purple-700 rounded-xl p-3 text-xs text-emerald-400 font-mono">
-                </div>
-
-                <button onclick="saveCustomCase()" class="w-full py-3 bg-arcade-pink hover:bg-pink-600 text-white font-bold rounded-xl font-pixel text-xs transition shadow-lg shadow-pink-500/30">
-                    <i class="fa-solid fa-floppy-disk mr-2"></i> ENREGISTRER LE CAS DANS LE JEU
-                </button>
-            </div>
-        </section>
-
-        <!-- CODEX -->
+        <!-- CODEX ACADÉMIQUE -->
         <section id="screen-codex" class="hidden space-y-6 animate-pop">
             <div class="flex justify-between items-center border-b border-purple-800 pb-4">
                 <div>
-                    <h2 class="text-2xl font-bold text-arcade-cyan font-pixel">CODEX ACADÉMIQUE DES 7 JUSTICES</h2>
+                    <h2 class="text-2xl font-bold text-arcade-cyan font-pixel">CODEX DES THÉORIES (Cropanzano et al., 2007)</h2>
                     <p class="text-xs text-slate-400">Références scientifiques et théories organisationnelles</p>
                 </div>
                 <button onclick="showScreen('screen-menu')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-purple-700 text-xs font-bold rounded-xl">
@@ -437,7 +381,6 @@
             reputation: 0,
             combo: 1,
             chaos: 20,
-            audioEnabled: true,
             currentIdx: 0,
             historyLog: []
         };
@@ -557,33 +500,6 @@
             document.getElementById('summary-desc').innerText = desc;
         }
 
-        function saveCustomCase() {
-            const mod = document.getElementById('edit-module').value;
-            const ctx = document.getElementById('edit-context').value;
-            const speech = document.getElementById('edit-speech').value;
-            const optText = document.getElementById('edit-opt1-text').value;
-            const optExp = document.getElementById('edit-opt1-exp').value;
-            const optCit = document.getElementById('edit-opt1-cit').value;
-
-            if(!mod || !speech || !optText) {
-                alert("Veuillez remplir au moins le titre, la situation et l'option de réponse.");
-                return;
-            }
-
-            CROPANZANO_CASES.push({
-                module: mod,
-                context: ctx || "Cas d'étude sur mesure",
-                speech: speech,
-                options: [
-                    { text: optText, isCorrect: true, explanation: optExp, citation: optCit },
-                    { text: "Option par défaut non alignée sur la théorie", isCorrect: false, explanation: "Cette décision manque de rigueur théorique.", citation: "Ref: Cropanzano et al. (2007)." }
-                ]
-            });
-
-            alert("Cas d'étude enregistré avec succès ! Il est désormais intégré au jeu.");
-            showScreen('screen-menu');
-        }
-
         function generatePDFReport() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -607,7 +523,7 @@
             let yPos = 60;
             doc.setFontSize(11);
             doc.setTextColor(0);
-            doc.text("DÉTAIL DES DÉCISIONS MANAGÉRIALES :", 10, yPos);
+            doc.text("DÉTAIL DES DÉCISIONS MANAGÉRIALE :", 10, yPos);
             yPos += 8;
 
             gameState.historyLog.forEach((log, idx) => {
@@ -643,14 +559,7 @@
             });
         }
 
-        function toggleAudio() {
-            gameState.audioEnabled = !gameState.audioEnabled;
-            document.getElementById('btn-audio').innerHTML = gameState.audioEnabled ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark text-red-400"></i>';
-        }
-
-        window.onload = function() {
-            updateHUD();
-        };
+        window.onload = function() { updateHUD(); };
     </script>
 </body>
 </html>
