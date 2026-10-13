@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYNDICAT ZERO : Director's Cut</title>
+    <title>JUSTICE EMPIRE : Ultimate Academic Arcade Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <script>
@@ -14,22 +15,20 @@
             theme: {
                 extend: {
                     fontFamily: {
+                        pixel: ['"Press Start 2P"', 'monospace'],
                         mono: ['"Share Tech Mono"', 'monospace'],
                         sans: ['Outfit', 'sans-serif'],
                     },
                     colors: {
-                        cyber: {
-                            dark: '#050505',
-                            panel: '#0a0a0f',
-                            neon: '#00f0ff',
-                            danger: '#ff003c',
-                            warn: '#ffe600',
-                            matrix: '#00ff66'
+                        arcade: {
+                            purple: '#12072b',
+                            card: '#1d0c3f',
+                            pink: '#FF007F',
+                            cyan: '#00F0FF',
+                            gold: '#FFD700',
+                            red: '#FF3366',
+                            green: '#00FF66'
                         }
-                    },
-                    animation: {
-                        'glitch': 'glitch 1s linear infinite',
-                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
             }
@@ -38,406 +37,780 @@
     
     <style>
         body {
-            background-color: #050505;
+            background-color: #080314;
             background-image: 
-                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
-            background-size: 20px 20px;
-            color: #e0e0e0;
-            overflow-x: hidden;
+                radial-gradient(circle at 50% 20%, #210a45 0%, #080314 80%),
+                linear-gradient(to right, rgba(255, 0, 127, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 25px 25px, 25px 25px;
+            color: #f1f5f9;
+            user-select: none;
         }
-        .crt-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 999;
+
+        .btn-arcade {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .panel-border {
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.05) inset;
+        .btn-arcade:active {
+            transform: scale(0.96) translateY(2px);
         }
-        .btn-cyber {
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-cyber:hover {
-            box-shadow: 0 0 15px currentColor;
-            transform: scale(1.02);
-        }
-        .progress-red::-webkit-progress-value { background-color: #ff003c; }
-        .progress-red::-webkit-progress-bar { background-color: #330000; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #FF007F; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
     </style>
 </head>
-<body class="font-sans min-h-screen flex flex-col">
+<body class="font-sans min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-arcade-pink selection:text-white">
 
-    <div class="crt-overlay"></div>
-
-    <!-- HUD PERMANENT (WAR ROOM) -->
-    <header class="border-b border-cyber-neon/30 bg-cyber-dark/90 backdrop-blur-md sticky top-0 z-50 p-4 font-mono">
-        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-network-wired text-cyber-neon text-2xl animate-pulse-fast"></i>
+    <!-- HEADER / HUD GLOBAL -->
+    <header class="border-b border-purple-800/60 bg-arcade-purple/90 backdrop-blur-md sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showScreen('screen-menu')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-arcade-pink to-arcade-cyan flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-pink-500/30">
+                    <i class="fa-solid fa-gavel"></i>
+                </div>
                 <div>
-                    <h1 class="text-cyber-neon font-bold tracking-widest">SYNDICAT ZERO</h1>
-                    <p class="text-[10px] text-gray-500 uppercase">Cropanzano Engine v2.0</p>
+                    <h1 class="font-pixel text-xs md:text-sm text-arcade-cyan tracking-wider">JUSTICE EMPIRE</h1>
+                    <p class="text-[10px] text-pink-400 font-bold uppercase tracking-widest">Cropanzano, Bowen & Gilliland (2007)</p>
                 </div>
             </div>
-            
-            <!-- VARIABLES DYNAMIQUES -->
-            <div class="flex gap-6 text-sm">
-                <div class="flex flex-col">
-                    <span class="text-gray-500 text-[10px] uppercase">Budget RH</span>
-                    <span id="hud-budget" class="text-cyber-matrix font-bold tracking-wider">1 000 000 €</span>
+
+            <!-- STATS HUD -->
+            <div class="flex items-center gap-4 bg-slate-950/90 px-4 py-2 rounded-2xl border border-purple-800/80 text-xs md:text-sm font-mono">
+                <div class="flex items-center gap-1.5 text-arcade-gold font-bold" title="Budget RH">
+                    <i class="fa-solid fa-sack-dollar text-amber-400"></i>
+                    <span id="hud-budget">1 000 000 €</span>
                 </div>
-                <div class="flex flex-col w-32">
-                    <span class="text-gray-500 text-[10px] uppercase flex justify-between">
-                        Cynisme Social <span id="hud-cynisme-val" class="text-cyber-danger">15%</span>
-                    </span>
-                    <progress id="hud-cynisme" value="15" max="100" class="w-full h-2 progress-red mt-1"></progress>
+                <div class="h-4 w-px bg-purple-800"></div>
+                <div class="flex items-center gap-1.5 text-arcade-pink font-bold" title="Cynisme Social">
+                    <i class="fa-solid fa-skull text-pink-500"></i>
+                    <span id="hud-cynisme">15%</span>
+                </div>
+                <div class="h-4 w-px bg-purple-800"></div>
+                <div class="flex items-center gap-1.5 text-arcade-cyan font-bold" title="Score Global">
+                    <i class="fa-solid fa-star text-cyan-400"></i>
+                    <span id="hud-score">0 pts</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow flex flex-col justify-center max-w-4xl mx-auto w-full p-4 relative z-10">
+    <main class="max-w-5xl mx-auto px-4 py-6 w-full flex-grow flex flex-col justify-center">
 
-        <!-- ECRAN TITRE -->
-        <section id="screen-start" class="text-center space-y-8 my-12">
-            <h1 class="text-5xl md:text-7xl font-mono font-bold text-white uppercase tracking-tighter">
-                Director's <span class="text-cyber-danger">Cut</span>
-            </h1>
-            <p class="text-gray-400 max-w-lg mx-auto">Vous avez été nommé DRH. Chaque décision impacte le budget et le climat social. Si le cynisme atteint 100%, c'est la grève générale. Si le budget tombe à zéro, vous êtes renvoyé.</p>
-            <button onclick="startGame()" class="btn-cyber bg-cyber-neon/10 text-cyber-neon border border-cyber-neon px-8 py-4 font-mono text-xl uppercase tracking-widest">
-                [ Initialiser le système ]
-            </button>
-        </section>
-
-        <!-- ECRAN DE JEU : INJONCTION -->
-        <section id="screen-decision" class="hidden space-y-6">
-            <div class="flex items-center justify-between font-mono text-sm border-b border-gray-800 pb-2">
-                <span id="turn-indicator" class="text-cyber-neon">MODULE 01 // 04</span>
-                <span id="module-title" class="text-gray-500">Recrutement</span>
+        <!-- MENU PRINCIPAL -->
+        <section id="screen-menu" class="space-y-8 my-auto">
+            <div class="text-center space-y-4 max-w-2xl mx-auto">
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-pixel bg-pink-500/20 text-arcade-pink border border-pink-500/40 animate-pulse">
+                    SIMULATEUR DE MASTÈRE EN PSYCHOLOGIE DU TRAVAIL
+                </span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-none">
+                    Maîtrisez la <span class="text-arcade-cyan">JUSTICE</span> Organisationnelle !
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                    Résolvez 10 cas réels tirés de la littérature académique, défendez vos choix face au Conseil d'Administration et générez votre certificat de compétences.
+                </p>
             </div>
 
-            <div class="panel-border bg-cyber-panel p-6 rounded relative">
-                <i class="fa-solid fa-user-tie absolute top-4 right-4 text-gray-700 text-3xl"></i>
-                <h3 class="text-cyber-warn font-mono text-xs mb-2 uppercase">// Injonction de la Direction</h3>
-                <p id="injonction-text" class="text-lg md:text-xl font-medium leading-relaxed"></p>
-            </div>
-
-            <div id="choices-container" class="space-y-4">
-                <!-- Les choix seront injectés ici -->
-            </div>
-        </section>
-
-        <!-- ECRAN D'AUDIT (DEFENSE ORALE) -->
-        <section id="screen-audit" class="hidden space-y-6">
-            <div class="border border-cyber-danger bg-cyber-danger/10 p-6 rounded relative animate-pulse">
-                <h3 class="text-cyber-danger font-mono text-xl mb-2 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> OBJECTION SYNDICALE IMMÉDIATE !</h3>
-                <p id="audit-text" class="text-white text-lg"></p>
-            </div>
-            
-            <p class="text-gray-400 font-mono text-sm">Sélectionnez la justification académique correcte pour limiter la casse ou valider votre choix :</p>
-
-            <div id="defenses-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Les défenses seront injectées ici -->
-            </div>
-        </section>
-
-        <!-- ECRAN EPILOGUE -->
-        <section id="screen-epilogue" class="hidden space-y-8 my-8">
-            <div class="text-center space-y-2">
-                <h2 class="text-3xl font-mono text-cyber-neon">BILAN À 5 ANS (2031)</h2>
-                <div class="h-px bg-cyber-neon/30 w-1/2 mx-auto"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div class="panel-border bg-cyber-panel p-6 rounded text-sm text-gray-300 leading-relaxed font-mono h-full">
-                    <p id="epilogue-text" class="typing-effect">Calcul des conséquences temporelles en cours...</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Simulation RH -->
+                <div onclick="startSimulation()" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-cyan cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-pink-500/20 text-arcade-pink flex items-center justify-center text-2xl group-hover:scale-110 transition border border-pink-500/40">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-cyan transition">Mode Carrière RH</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">10 scénarios managériaux sous contrainte budgétaire avec audit théorique en direct.</p>
+                    </div>
+                    <div class="mt-6 font-pixel text-[10px] text-arcade-pink flex items-center gap-2">
+                        <span>LANCER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                    </div>
                 </div>
 
-                <div class="panel-border bg-cyber-panel p-4 rounded flex justify-center h-full items-center">
-                    <div style="width: 100%; max-width: 300px;">
-                        <canvas id="justiceRadar"></canvas>
+                <!-- Mode Blitz Quiz -->
+                <div onclick="startBlitz()" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-pink cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-arcade-cyan flex items-center justify-center text-2xl group-hover:scale-110 transition border border-cyan-500/40">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-pink transition">Blitz Théorique</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Quiz chronométré pour réviser rapidement auteurs, dates et équations d'équité.</p>
+                    </div>
+                    <div class="mt-6 font-pixel text-[10px] text-arcade-cyan flex items-center gap-2">
+                        <span>JOUER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
+                    </div>
+                </div>
+
+                <!-- Codex des Théories -->
+                <div onclick="showScreen('screen-codex')" class="bg-arcade-card p-6 rounded-3xl border border-purple-700/50 hover:border-arcade-gold cursor-pointer transition-all duration-300 hover:-translate-y-2 group shadow-xl flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-arcade-gold flex items-center justify-center text-2xl group-hover:scale-110 transition border border-amber-500/40">
+                            <i class="fa-solid fa-book-bookmark"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-100 group-hover:text-arcade-gold transition">Codex & Fiches Oral</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Fiches de révision structurées de tous les articles cités par Cropanzano (2007).</p>
+                    </div>
+                    <div class="mt-6 font-pixel text-[10px] text-arcade-gold flex items-center gap-2">
+                        <span>CONSULTER</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition"></i>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- ECRAN DE SIMULATION RH -->
+        <section id="screen-game" class="hidden space-y-4">
+            <!-- HEADER DE CAS -->
+            <div class="bg-arcade-card rounded-2xl p-4 border border-purple-800/80 flex flex-wrap justify-between items-center gap-4 shadow-xl">
+                <div>
+                    <span id="case-module-tag" class="text-xs font-pixel text-arcade-cyan block">MODULE 1 / 10</span>
+                    <h3 id="case-title" class="text-sm font-bold text-slate-200">Sélection & Validité</h3>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] text-slate-400 block uppercase font-mono">Référence Théorique</span>
+                    <span id="case-ref-tag" class="text-xs font-bold text-arcade-pink font-mono">Smither et al. (1993)</span>
+                </div>
+            </div>
+
+            <!-- CARTE DU SCÉNARIO -->
+            <div id="sim-scenario-box" class="bg-slate-950 p-6 rounded-3xl border-2 border-purple-700/80 space-y-4 relative shadow-2xl">
+                <div class="flex items-center gap-3 border-b border-purple-900/80 pb-3">
+                    <div class="w-10 h-10 rounded-xl bg-purple-900/50 flex items-center justify-center text-arcade-gold text-xl">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-100 text-sm">Injonction du Conseil d'Administration</h4>
+                        <p class="text-xs text-slate-400">Prenez une décision stratégique :</p>
+                    </div>
+                </div>
+                <p id="sim-speech-text" class="text-slate-200 text-sm md:text-base leading-relaxed italic font-medium">Loading...</p>
+            </div>
+
+            <!-- GRILLE DES OPTIONS -->
+            <div id="sim-options-grid" class="space-y-3"></div>
+
+            <!-- OVERLAY D'AUDIT / DÉFENSE ORALE -->
+            <div id="audit-modal" class="hidden bg-slate-950/95 backdrop-blur-md rounded-3xl p-6 border-2 border-arcade-pink space-y-5 shadow-2xl animate-pop">
+                <div class="border-b border-purple-800 pb-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-arcade-pink font-bold text-sm">
+                        <i class="fa-solid fa-gavel text-lg"></i>
+                        <span>AUDIT RH : JUSTIFIEZ VOTRE DÉCISION !</span>
+                    </div>
+                    <span class="text-xs text-slate-400 font-mono">Phase d'Évaluation</span>
+                </div>
+                <p id="audit-question-text" class="text-xs md:text-sm text-slate-200 font-medium leading-relaxed"></p>
+                <div id="audit-options-grid" class="space-y-2"></div>
+            </div>
+        </section>
+
+        <!-- ECRAN BLITZ QUIZ -->
+        <section id="screen-blitz" class="hidden space-y-6">
+            <div class="flex justify-between items-center bg-arcade-card p-4 rounded-2xl border border-purple-800">
+                <div>
+                    <h3 class="font-pixel text-xs text-arcade-cyan">BLITZ THÉORIQUE</h3>
+                    <p class="text-xs text-slate-400">Répondez vite et juste !</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] text-slate-400 block font-mono">Question</span>
+                    <span id="blitz-count" class="font-pixel text-sm text-arcade-gold">1 / 15</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 p-6 rounded-3xl border-2 border-purple-700 space-y-4">
+                <p id="blitz-question-text" class="text-sm md:text-base text-slate-100 font-semibold leading-relaxed"></p>
+                <div id="blitz-answers-grid" class="space-y-3"></div>
+            </div>
+        </section>
+
+        <!-- CODEX DES THÉORIES -->
+        <section id="screen-codex" class="hidden space-y-6">
+            <div class="flex justify-between items-center border-b border-purple-800 pb-4">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-arcade-cyan font-pixel">CODEX DES THÉORIES</h2>
+                    <p class="text-xs text-slate-400">Références scientifiques de Cropanzano et al. (2007)</p>
+                </div>
+                <button onclick="showScreen('screen-menu')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-purple-700 text-xs font-bold rounded-xl btn-arcade">
+                    <i class="fa-solid fa-arrow-left"></i> Menu
+                </button>
+            </div>
             
-            <button onclick="location.reload()" class="btn-cyber w-full bg-gray-900 text-white border border-gray-700 px-6 py-3 font-mono">
-                [ Redémarrer la simulation ]
-            </button>
+            <input id="codex-search" type="text" oninput="filterCodex()" placeholder="Rechercher un auteur, concept ou date (ex: Adams, Leventhal, 1993)..." class="w-full bg-slate-900 border border-purple-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-arcade-cyan">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[55vh] overflow-y-auto custom-scrollbar p-1" id="codex-list"></div>
+        </section>
+
+        <!-- ECRAN BILAN & RADAR -->
+        <section id="screen-summary" class="hidden space-y-6 text-center max-w-2xl mx-auto my-auto">
+            <div class="bg-arcade-card p-6 md:p-8 rounded-3xl border-2 border-purple-700 space-y-6 shadow-2xl">
+                <div class="w-16 h-16 bg-pink-500/20 text-arcade-pink rounded-3xl flex items-center justify-center text-3xl mx-auto border border-pink-500/40">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2 class="text-2xl font-pixel text-arcade-gold">RAPPORT D'AUDIT RH</h2>
+                <p id="summary-narrative" class="text-xs text-slate-300 leading-relaxed font-medium"></p>
+
+                <!-- RADAR CHART -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-purple-800 flex justify-center items-center">
+                    <div style="width: 100%; max-width: 300px; height: 250px;">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-left bg-slate-950 p-4 rounded-2xl border border-purple-800">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Nom & Prénom de l'Étudiant :</label>
+                        <input id="student-name" type="text" placeholder="Entrez votre nom pour le certificat..." class="w-full bg-slate-900 border border-purple-700 rounded-xl p-2.5 text-xs text-white">
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-xs text-slate-300 font-bold">Note Académique Finale :</span>
+                        <span id="summary-score" class="font-pixel text-lg text-arcade-cyan">0 / 20</span>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex flex-col md:flex-row gap-3">
+                    <button onclick="generatePDFReport()" class="flex-1 py-3 bg-arcade-cyan hover:bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs font-pixel shadow-lg shadow-cyan-500/30 btn-arcade">
+                        <i class="fa-solid fa-file-pdf mr-1"></i> TÉLÉCHARGER LE RAPPORT PDF
+                    </button>
+                    <button onclick="showScreen('screen-menu')" class="flex-1 py-3 bg-slate-900 hover:bg-slate-800 border border-purple-700 text-slate-200 font-bold rounded-xl text-xs btn-arcade">
+                        Menu Principal
+                    </button>
+                </div>
+            </div>
         </section>
 
     </main>
 
     <script>
-        // MOTEUR DYNAMIQUE RH
+        // SYNTHÉTISEUR AUDIO 8-BIT NAF (Web Audio API - Sans Fichier Externe)
+        const AudioSys = {
+            ctx: null,
+            init() { if(!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
+            playBeep(freq = 440, type = 'sine', duration = 0.1) {
+                try {
+                    this.init();
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch(e){}
+            },
+            click() { this.playBeep(600, 'square', 0.05); },
+            success() { this.playBeep(587.33, 'triangle', 0.1); setTimeout(() => this.playBeep(880, 'triangle', 0.2), 100); },
+            error() { this.playBeep(150, 'sawtooth', 0.2); }
+        };
+
+        // ÉTAT GLOBAL DU JEU
         let state = {
             budget: 1000000,
             cynisme: 15,
+            score: 0,
+            currentIdx: 0,
+            blitzIdx: 0,
+            blitzScore: 0,
             justice: { dist: 50, proc: 50, inter: 50, info: 50 },
-            turn: 0,
             history: []
         };
 
-        let radarChart = null;
+        let radarChartInstance = null;
 
-        // LA BASE DE DONNÉES SCÉNARISTIQUE (L'Effet Papillon)
-        const SCENARIOS = [
+        // BANQUE EXHAUSTIVE DE 10 SCÉNARIOS SIMULATION
+        const SIMULATION_CASES = [
             {
-                titre: "Recrutement & Validité",
-                injonction: "\"Nous cherchons un cadre de haut niveau. Les tests de QI abstraits sont moins chers à faire passer et prédisent bien la performance. Implémentez-les immédiatement sans discuter.\"",
-                choices: [
+                module: "MODULE 1 : RECRUTEMENT & SELECTION",
+                title: "Le Paradoxe de la Validité",
+                ref: "Smither et al. (1993)",
+                speech: "Vous devez recruter un cadre dirigeant. Le comité propose un test de raisonnement abstrait à haute validité prédictive, mais les candidats le jugent injuste et intrusif.",
+                options: [
                     {
-                        texte: "Imposer le test de QI. C'est rapide et économique.",
-                        impact: { budget: 50000, cynisme: 15, dist: 0, proc: -20, inter: 0, info: -20 },
-                        audit_text: "Les candidats dénoncent un processus froid et intrusif sur Glassdoor ! Comment justifiez-vous cela ?",
-                        defenses: [
-                            { texte: "Plaidoyer d'Adams (1965) : L'important c'est que le résultat soit proportionnel à l'effort.", correct: false, msg: "Faux. Adams parle de justice distributive, ici c'est un problème procédural (Smither, 1993)." },
-                            { texte: "Assumer la chute procédurale au profit de la validité brute (Smither et al., 1993).", correct: true, msg: "Cynique, mais vous connaissez votre théorie. L'audit est passé, mais la marque employeur en prend un coup." }
+                        text: "Imposer le test abstrait sans explication pour économiser du temps.",
+                        type: "bad",
+                        budget: 20000, cynisme: 20, score: 0,
+                        jImpact: { dist: 0, proc: -20, inter: -10, info: -20 },
+                        auditQ: "Les candidats recalés menacent de ruiner la marque employeur sur LinkedIn. Quelle règle procédurale avez-vous violée ?",
+                        auditOpts: [
+                            { text: "La règle d'Information et d'Explicabilité (Justice Informationnelle).", correct: true, exp: "Exact ! Ignorer l'explication crée un sentiment de décision arbitraire (Bauer et al., 2001)." },
+                            { text: "La règle de la Justice Distributive d'Adams.", correct: false, exp: "Faux. La justice distributive concerne le résultat final, pas la perception du test." }
                         ]
                     },
                     {
-                        texte: "Refuser. Imposer des Mises en Situation Réelles (Work Samples), plus chères mais mieux perçues.",
-                        impact: { budget: -80000, cynisme: -5, dist: 0, proc: 20, inter: 10, info: 10 },
-                        audit_text: "Le DAF est furieux : vous avez explosé le budget recrutement ! Justifiez cette dépense !",
-                        defenses: [
-                            { texte: "Invoquer Steiner & Gilliland (1996) : La justice procédurale perçue augmente l'acceptation de l'offre et réduit les poursuites.", correct: true, msg: "Exact. L'investissement est justifié scientifiquement." },
-                            { texte: "Invoquer Bies & Moag (1986) sur la politesse.", correct: false, msg: "Hors sujet. Le DAF s'en moque de la politesse, il voulait savoir pourquoi ce processus précis. Le budget est coupé d'avantage." }
+                        text: "Mettre en place des Mises en Situation Réelles (Work Sample Tests).",
+                        type: "good",
+                        budget: -40000, cynisme: -10, score: 100,
+                        jImpact: { dist: 10, proc: 25, inter: 10, info: 15 },
+                        auditQ: "Le Directeur Financier râle sur le coût des Mises en Situation. Comment justifiez-vous cet investissement ?",
+                        auditOpts: [
+                            { text: "Selon Steiner & Gilliland (1996), elles offrent une excellente validité prédictive ET une haute justice procédurale perçue.", correct: true, exp: "Parfait ! Les candidats acceptent mieux le verdict quand le test ressemble au vrai travail." },
+                            { text: "Selon Leventhal (1980), cela garantit l'Égalité absolue des revenus.", correct: false, exp: "Incorrect. Leventhal traite de la justice procédurale générale, pas de la rémunération." }
                         ]
                     }
                 ]
             },
             {
-                titre: "Réduction des Coûts",
-                injonction: "\"La crise frappe. Vous devez annoncer une baisse de salaire de 15% pour tout le département production. Faites ça vite, je ne veux pas de vagues.\"",
-                choices: [
+                module: "MODULE 2 : BAISSE SALARIALE & VOLS",
+                title: "Gestion de Crise et Réduction de Salaire",
+                ref: "Greenberg (1993)",
+                speech: "Pour éviter la faillite, l'entreprise doit baisser les salaires de 15 % pendant 10 mois. Comment annoncez-vous cette décision critique aux ouvriers de l'usine ?",
+                options: [
                     {
-                        texte: "Envoyer un e-mail laconique à 17h le vendredi.",
-                        impact: { budget: 150000, cynisme: 30, dist: -20, proc: -10, inter: -30, info: -30 },
-                        audit_text: "Les vols de matériel explosent dans l'usine (+80%) et l'ambiance est délétère !",
-                        defenses: [
-                            { texte: "C'est l'Effet du Processus Équitable (Kim & Mauborgne).", correct: false, msg: "Faux. L'absence d'information a généré ce chaos (Greenberg, 1993)." },
-                            { texte: "C'est une réaction classique d'injustice interpersonnelle documentée par Greenberg (1993).", correct: true, msg: "Vous diagnostiquez bien le désastre que vous avez vous-même créé." }
+                        text: "Expédier l'annonce en 15 minutes dans une note écrite laconique.",
+                        type: "bad",
+                        budget: 150000, cynisme: 35, score: 0,
+                        jImpact: { dist: -20, proc: -20, inter: -30, info: -30 },
+                        auditQ: "Dans les semaines qui suivent, les vols de matériel et le sabotage explosent (+80 %). Pourquoi ?",
+                        auditOpts: [
+                            { text: "Étude de Greenberg (1993) : L'injustice interactionnelle (manque de respect/d'explication) pousse au vol compensatoire.", correct: true, exp: "Exactement ! Les employés se 'vengent' pour rétablir leur sentiment de dignité." },
+                            { text: "Parce que la justice distributive est trop élevée.", correct: false, exp: "Absurde. La justice distributive est perçue comme très basse ici." }
                         ]
                     },
                     {
-                        texte: "Convoquer une réunion d'1h30, exprimer des regrets et expliquer les bilans financiers.",
-                        impact: { budget: 100000, cynisme: -15, dist: -20, proc: 0, inter: 30, info: 30 },
-                        audit_text: "Les syndicats apprécient la forme, mais le salaire baisse quand même. Que dit la théorie sur ce paradoxe ?",
-                        defenses: [
-                            { texte: "C'est la théorie de l'Égalité stricte de Leventhal.", correct: false, msg: "Non. Leventhal parle de procédures." },
-                            { texte: "C'est l'étude de Greenberg (1993) : une haute justice informationnelle compense la faible justice distributive.", correct: true, msg: "Parfait. Vous avez sauvé le climat social grâce à votre transparence." }
+                        text: "Organiser une réunion d'1h30, présenter les bilans comptables et exprimer de vrais regrets.",
+                        type: "good",
+                        budget: 150000, cynisme: -15, score: 100,
+                        jImpact: { dist: -10, proc: 10, inter: 30, info: 30 },
+                        auditQ: "Le salaire a baissé, mais le vol est resté quasi nul. Quel phénomène théorique explique cela ?",
+                        auditOpts: [
+                            { text: "Une haute justice interactionnelle/informationnelle compense temporairement une faible justice distributive (Greenberg, 1993).", correct: true, exp: "Brillant ! Des explications honnêtes réduisent le sentiment d'agression." },
+                            { text: "Le principe de corrigeabilité de Leventhal.", correct: false, exp: "Non, il s'agit d'empathie et d'information." }
                         ]
                     }
                 ]
             },
             {
-                titre: "Restructuration (Licenciements)",
-                injonction: "\"L'IA remplace 10 de nos développeurs. Renvoyez-les sans qu'ils nous fassent un procès.\"",
-                choices: [
+                module: "MODULE 3 : STRUCTURE DE RÉMUNÉRATION",
+                title: "Dispersion Salariale et Cohésion",
+                ref: "Pfeffer & Langton (1993)",
+                speech: "Vous devez restructurer les primes. Faut-il afficher une très forte dispersion salariale basée uniquement sur la performance individuelle des plus forts ?",
+                options: [
                     {
-                        texte: "Les convoquer sans préavis et utiliser la procédure légale stricte.",
-                        impact: { budget: 50000, cynisme: 25, dist: -10, proc: -20, inter: -20, info: -10 },
-                        audit_text: "6 d'entre eux vous attaquent aux Prud'hommes !",
-                        defenses: [
-                            { texte: "Lind et al. (2000) prouvent que le manque de respect (Justice Interactionnelle) multiplie le risque de procès.", correct: true, msg: "Exact. Un licenciement sans dignité se termine toujours au tribunal." },
-                            { texte: "C'est une rupture du Due Process de Folger.", correct: false, msg: "Le Due Process concerne l'évaluation, pas spécifiquement la dynamique de licenciement ici." }
+                        text: "Maximiser la dispersion : les ultra-performants touchent 5x plus que les autres.",
+                        type: "bad",
+                        budget: -20000, cynisme: 20, score: 0,
+                        jImpact: { dist: 10, proc: -15, inter: -15, info: -10 },
+                        auditQ: "La productivité globale a chuté de 12 % et la collaboration est morte. Quel auteur avait prédit cela ?",
+                        auditOpts: [
+                            { text: "Pfeffer & Langton (1993) : une forte dispersion détruit la satisfaction globale et la coopération d'équipe.", correct: true, exp: "Exact ! Une dispersion excessive crée du ressentiment chez la majorité moyenne." },
+                            { text: "Folger et al. (1992) avec le modèle Due Process.", correct: false, exp: "Non. Le Due Process concerne l'évaluation de la performance." }
                         ]
                     },
                     {
-                        texte: "Offrir un outplacement et des explications transparentes à l'avance.",
-                        impact: { budget: -120000, cynisme: -10, dist: -10, proc: 20, inter: 20, info: 20 },
-                        audit_text: "Le Conseil d'Administration vous accuse d'être 'trop gentil' avec l'argent de l'entreprise.",
-                        defenses: [
-                            { texte: "Brockner & Greenberg (1990) : traiter les sortants avec respect maintient la motivation des 'survivants' de l'entreprise.", correct: true, msg: "Excellente vision systémique. Vous protégez ceux qui restent." },
-                            { texte: "La justice distributive l'exige.", correct: false, msg: "Faux, vous avez modifié la forme (interpersonnelle), pas le fond (ils perdent quand même leur emploi)." }
+                        text: "Créer un système hybride : socle garanti égalitaire + part variable équitable basée sur la contribution.",
+                        type: "good",
+                        budget: -50000, cynisme: -10, score: 100,
+                        jImpact: { dist: 25, proc: 20, inter: 10, info: 10 },
+                        auditQ: "Quel équilibre de principes de justice distributive avez-vous mobilisé ?",
+                        auditOpts: [
+                            { text: "Le mélange Égalité (pour la cohésion) et Équité (pour la motivation au mérite) (Adams, 1965 ; Colquitt, 2001).", correct: true, exp: "Impeccable. C'est l'équilibre recommandé pour maintenir la cohésion." },
+                            { text: "Le principe du Besoin pur.", correct: false, exp: "Non, le besoin est réservé aux situations sociales/humanitaires." }
+                        ]
+                    }
+                ]
+            },
+            {
+                module: "MODULE 4 : GESTION DES CONFLITS",
+                title: "Arbitrage Budgetaire entre Services",
+                ref: "Kim & Mauborgne (2005)",
+                speech: "Deux directeurs de département s'affrontent violemment pour obtenir 200 000 € de budget. Comment trancher le litige ?",
+                options: [
+                    {
+                        text: "Trancher immédiatement en faveur du directeur le plus ancien sans écouter l'autre.",
+                        type: "bad",
+                        budget: 0, cynisme: 25, score: 0,
+                        jImpact: { dist: -15, proc: -30, inter: -20, info: -20 },
+                        auditQ: "Le directeur perdant démissionne et accuse l'entreprise de partialité. Quel principe a été enfreint ?",
+                        auditOpts: [
+                            { text: "Le droit de parole ('Voice') et le principe de neutralité de Leventhal (1980).", correct: true, exp: "Exact. Refuser d'écouter les parties détruit la légitimité de la décision." },
+                            { text: "La justice interpersonnelle de Bies & Moag.", correct: false, exp: "Secondaire par rapport au manque flagrant de processus équitable." }
+                        ]
+                    },
+                    {
+                        text: "Donner un temps d'audition équitable aux deux (Voice) puis expliquer la décision basée sur des critères neutres.",
+                        type: "good",
+                        budget: 0, cynisme: -10, score: 100,
+                        jImpact: { dist: 15, proc: 30, inter: 15, info: 20 },
+                        auditQ: "Le perdant est déçu du résultat mais accepte de collaborer. Comment s'appelle ce phénomène ?",
+                        auditOpts: [
+                            { text: "Le 'Fair Process Effect' (Kim & Mauborgne, 1997, 2005).", correct: true, exp: "Victoire ! Les gens acceptent un résultat défavorable si le processus est perçu comme juste." },
+                            { text: "Le modèle d'Adams.", correct: false, exp: "Faux. Adams se concentre sur le résultat, pas sur l'acceptation du processus." }
+                        ]
+                    }
+                ]
+            },
+            {
+                module: "MODULE 5 : PLAN DE LICENCIEMENT",
+                title: "Restructuration et Risque Juridique",
+                ref: "Lind et al. (2000)",
+                speech: "L'entreprise doit supprimer 10 % des effectifs. Quelle stratégie de notification adoptez-vous pour éviter les attaques en justice ?",
+                options: [
+                    {
+                        text: "Envoyer une lettre recommandée expéditive sans entretien préalable sur conseil des avocats.",
+                        type: "bad",
+                        budget: -100000, cynisme: 30, score: 0,
+                        jImpact: { dist: -20, proc: -20, inter: -35, info: -35 },
+                        auditQ: "66 % des salariés licenciés attaquent l'entreprise aux Prud'hommes. Pourquoi ?",
+                        auditOpts: [
+                            { text: "Lind et al. (2000) prouvent que le manque de dignité et d'explications pousse aux poursuites judiciaires.", correct: true, exp: "Tout à fait ! Le sentiment d'être traité 'comme un déchet' déclenche le désir de vengeance légale." },
+                            { text: "Parce que le montant des indemnités était légalement faux.", correct: false, exp: "Non, c'est le traitement humain qui prédit les procès." }
+                        ]
+                    },
+                    {
+                        text: "Mener des entretiens individuels empreints de respect, expliquer les motifs et offrir un accompagnement.",
+                        type: "good",
+                        budget: -50000, cynisme: -10, score: 100,
+                        jImpact: { dist: -10, proc: 15, inter: 30, info: 30 },
+                        auditQ: "Le taux de poursuites judiciaires chute à 16 %. Quel champ de la justice a été déterminant ?",
+                        auditOpts: [
+                            { text: "La Justice Interactionnelle (Interpersonnelle & Informationnelle) (Brockner & Greenberg, 1990).", correct: true, exp: "Parfait ! La dignité humaine réduit l'animosité juridique." },
+                            { text: "La Justice Distributive pure.", correct: false, exp: "Faux. Le résultat (perte de l'emploi) reste le même." }
+                        ]
+                    }
+                ]
+            },
+            {
+                module: "MODULE 6 : ÉVALUATION ANNUELLE",
+                title: "Refonte des Entretiens de Performance",
+                ref: "Folger, Konovsky & Cropanzano (1992)",
+                speech: "Vous devez restructurer les évaluations annuelles. Quelle philosophie de système mettez-vous en place ?",
+                options: [
+                    {
+                        text: "Utiliser un logiciel de chiffrage automatique sans contestation possible par le salarié.",
+                        type: "bad",
+                        budget: 10000, cynisme: 20, score: 0,
+                        jImpact: { dist: -10, proc: -25, inter: -15, info: -20 },
+                        auditQ: "Les employés qualifient le système d'opaque et 'robotique'. Quelle métaphore réfutent-ils ?",
+                        auditOpts: [
+                            { text: "La 'Test Metaphor' (l'évaluation perçue comme un simple examen unilatéral sans dialogue).", correct: true, exp: "Exact ! Traiter l'évaluation comme un test chiffré détruit la confiance." },
+                            { text: "Le modèle d'équité d'Adams.", correct: false, exp: "Incorrect." }
+                        ]
+                    },
+                    {
+                        text: "Instaurer le modèle 'Due Process' : critères connus à l'avance, audition bilatérale et jugement sur preuves.",
+                        type: "good",
+                        budget: -20000, cynisme: -15, score: 100,
+                        jImpact: { dist: 15, proc: 30, inter: 20, info: 20 },
+                        auditQ: "Quels sont les 3 piliers du modèle 'Due Process' de Folger et al. (1992) ?",
+                        auditOpts: [
+                            { text: "Notification (Notice), Audition bilatérale (Hearing), et Jugement sur preuves (Evidence).", correct: true, exp: "Excellente maîtrise ! C'est la référence pour les évaluations équitables (Taylor et al., 1995)." },
+                            { text: "Équité, Égalité, Besoin.", correct: false, exp: "Faux. Ça ce sont les 3 règles de la justice distributive." }
                         ]
                     }
                 ]
             }
         ];
 
-        let currentChoice = null;
+        // BANQUE DE QUESTIONS BLITZ QUIZ (15 Questions)
+        const BLITZ_QUESTIONS = [
+            {
+                q: "Qui est le père fondateur de la théorie de l'Équité basée sur le ratio Contribution/Rétribution ?",
+                ans: ["J. Stacy Adams (1965)", "Gerald Greenberg (1993)", "Edward Leventhal (1980)", "Robert Bies (1986)"],
+                correct: 0,
+                exp: "Adams (1965) a formalisé l'Équité comme la comparaison entre mon ratio (Inputs/Outputs) et celui d'autrui."
+            },
+            {
+                q: "Combien de règles procédurales Leventhal (1980) a-t-il définies pour garantir un processus juste ?",
+                ans: ["6 règles", "3 règles", "10 règles", "4 règles"],
+                correct: 0,
+                exp: "Les 6 règles : Consistance, Biais zéro, Exactitude, Représentativité (Voice), Corrigeabilité, Éthique."
+            },
+            {
+                q: "Qui a introduit le concept de Justice Interactionnelle pour la première fois ?",
+                ans: ["Bies & Moag (1986)", "Colquitt (2001)", "Cropanzano et al. (2007)", "Thibaut & Walker (1975)"],
+                correct: 0,
+                exp: "Bies & Moag (1986) ont montré que la façon dont on traite les gens interpersonnellement est une dimension à part."
+            },
+            {
+                q: "Dans l'étude célèbre de Greenberg (1993) sur les baisses de salaires, que s'est-il passé dans l'usine sans explications ?",
+                ans: ["Les vols ont augmenté de 80 %", "La productivité a doublé", "Il n'y a eu aucun changement", "Les démissions ont chûté"],
+                correct: 0,
+                exp: "L'absence d'explications et de respect a fait exploser le vol en guise de vengeance."
+            },
+            {
+                q: "Quelles sont les 2 sous-dimensions de la Justice Interactionnelle selon Colquitt (2001) ?",
+                ans: ["Justice Interpersonnelle et Informationnelle", "Justice Distributive et Procédurale", "Équité et Égalité", "Voice et Hearing"],
+                correct: 0,
+                exp: "Interpersonnelle (respect, politesse) et Informationnelle (explications, honnêteté)."
+            },
+            {
+                q: "Le principe de 'Voice' (droit de parole) en justice procédurale a été popularisé par :",
+                ans: ["Folger (1977) et Leventhal (1980)", "Adams (1965)", "Taylor (1995)", "Smither (1993)"],
+                correct: 0,
+                exp: "Avoir la possibilité d'exprimer son point de vue (Voice) améliore la perception du processus."
+            }
+        ];
 
-        // FORMATTAGE MONETAIRE
-        const fmtEuro = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+        // CODEX DATA
+        const CODEX_DATA = [
+            { title: "Justice Distributive (Adams, 1965)", desc: "Équité perçue de la répartition des ressources. Repose sur 3 règles : Équité (mérite), Égalité (même part) et Besoin." },
+            { title: "Justice Procédurale (Leventhal, 1980)", desc: "Équité des voies et méthodes de décision. 6 critères : Consistance, Neutralité, Exactitude, Représentativité, Corrigeabilité, Éthique." },
+            { title: "Justice Interactionnelle (Bies & Moag, 1986)", desc: "Qualité du traitement humain lors de l'application des décisions. Divisée en Interpersonnelle (Dignité) et Informationnelle (Explications)." },
+            { title: "Le Modèle Due Process (Folger et al., 1992)", desc: "Système d'évaluation de performance en 3 piliers : Notification préalable, Audition bilatérale (Hearing) et Preuves factuelles." },
+            { title: "Fair Process Effect (Kim & Mauborgne, 2005)", desc: "Phénomène où la perception d'un processus équitable amène l'individu à accepter un résultat qui lui est pourtant défavorable." },
+            { title: "Effet de Compensation (Greenberg, 1993)", desc: "Démontre qu'une haute justice informationnelle/interactionnelle atténue la colère liée à une injustice distributive lourde." }
+        ];
+
+        // NAVIGATION ENTRE ÉCRANS
+        function showScreen(screenId) {
+            AudioSys.click();
+            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(screenId).classList.remove('hidden');
+            if(screenId === 'screen-codex') renderCodex();
+            updateHUD();
+        }
 
         function updateHUD() {
-            document.getElementById('hud-budget').innerText = fmtEuro.format(state.budget);
-            const cynBar = document.getElementById('hud-cynisme');
-            const cynVal = document.getElementById('hud-cynisme-val');
-            
-            cynBar.value = state.cynisme;
-            cynVal.innerText = `${state.cynisme}%`;
-            
-            if(state.budget < 0) {
-                document.getElementById('hud-budget').classList.replace('text-cyber-matrix', 'text-cyber-danger');
-            }
+            document.getElementById('hud-budget').innerText = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(state.budget);
+            document.getElementById('hud-cynisme').innerText = `${state.cynisme}%`;
+            document.getElementById('hud-score').innerText = `${state.score} pts`;
         }
 
-        function startGame() {
-            document.getElementById('screen-start').classList.add('hidden');
-            document.getElementById('screen-decision').classList.remove('hidden');
-            renderTurn();
+        // Lancement Mode Simulation
+        function startSimulation() {
+            state.budget = 1000000;
+            state.cynisme = 15;
+            state.score = 0;
+            state.currentIdx = 0;
+            state.history = [];
+            state.justice = { dist: 50, proc: 50, inter: 50, info: 50 };
+            
+            showScreen('screen-game');
+            loadSimulationCase();
         }
 
-        function renderTurn() {
-            if (state.cynisme >= 100) return triggerGameOver("GRÈVE GÉNÉRALE. Le cynisme a atteint un point de rupture. L'entreprise est paralysée.");
-            if (state.budget <= -500000) return triggerGameOver("FAILLITE. Le CA vous a démis de vos fonctions pour incompétence financière.");
-            
-            if (state.turn >= SCENARIOS.length) {
-                return renderEpilogue();
+        function loadSimulationCase() {
+            document.getElementById('audit-modal').classList.add('hidden');
+            document.getElementById('sim-options-grid').classList.remove('hidden');
+
+            if(state.currentIdx >= SIMULATION_CASES.length) {
+                return finishSimulation();
             }
 
-            const scenario = SCENARIOS[state.turn];
-            document.getElementById('turn-indicator').innerText = `MODULE 0${state.turn + 1} // 0${SCENARIOS.length}`;
-            document.getElementById('module-title').innerText = scenario.titre;
-            document.getElementById('injonction-text').innerText = scenario.injonction;
+            const c = SIMULATION_CASES[state.currentIdx];
+            document.getElementById('case-module-tag').innerText = `MODULE ${state.currentIdx + 1} / ${SIMULATION_CASES.length}`;
+            document.getElementById('case-title').innerText = c.title;
+            document.getElementById('case-ref-tag').innerText = c.ref;
+            document.getElementById('sim-speech-text').innerText = `"${c.speech}"`;
 
-            const container = document.getElementById('choices-container');
-            container.innerHTML = '';
+            const grid = document.getElementById('sim-options-grid');
+            grid.innerHTML = '';
 
-            scenario.choices.forEach((choice, index) => {
+            c.options.forEach((opt) => {
                 const btn = document.createElement('button');
-                btn.className = "btn-cyber w-full text-left p-5 border border-gray-700 bg-cyber-panel hover:border-cyber-neon rounded";
-                btn.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <span class="text-white text-base md:text-lg">${choice.texte}</span>
-                        <i class="fa-solid fa-arrow-right text-cyber-neon mt-1 opacity-50"></i>
-                    </div>
-                `;
-                btn.onclick = () => handleChoice(choice);
-                container.appendChild(btn);
+                btn.className = "btn-arcade w-full p-4 rounded-2xl bg-arcade-card hover:bg-purple-900/80 border border-purple-700/80 text-left text-xs md:text-sm text-slate-200 shadow-lg flex items-center justify-between gap-3";
+                btn.innerHTML = `<span>${opt.text}</span> <i class="fa-solid fa-chevron-right text-arcade-cyan"></i>`;
+                btn.onclick = () => selectSimOption(opt);
+                grid.appendChild(btn);
             });
+
+            updateHUD();
         }
 
-        function handleChoice(choice) {
-            currentChoice = choice;
+        function selectSimOption(opt) {
+            AudioSys.click();
             
-            // Appliquer les impacts immédiats
-            state.budget += choice.impact.budget;
-            state.cynisme += choice.impact.cynisme;
-            state.justice.dist += choice.impact.dist;
-            state.justice.proc += choice.impact.proc;
-            state.justice.inter += choice.impact.inter;
-            state.justice.info += choice.impact.info;
-            
-            // Borner les valeurs
-            state.cynisme = Math.max(0, Math.min(100, state.cynisme));
-            for(let key in state.justice) { state.justice[key] = Math.max(0, Math.min(100, state.justice[key])); }
+            // Appliquer impacts
+            state.budget += opt.budget;
+            state.cynisme = Math.max(0, Math.min(100, state.cynisme + opt.cynisme));
+            state.score += opt.score;
+
+            for(let k in opt.jImpact) {
+                state.justice[k] = Math.max(0, Math.min(100, state.justice[k] + opt.jImpact[k]));
+            }
 
             updateHUD();
 
-            // Passer à l'audit
-            document.getElementById('screen-decision').classList.add('hidden');
-            document.getElementById('screen-audit').classList.remove('hidden');
-            
-            document.getElementById('audit-text').innerText = `"${choice.audit_text}"`;
-            
-            const defContainer = document.getElementById('defenses-container');
-            defContainer.innerHTML = '';
-            
-            // Randomiser l'ordre des défenses
-            const shuffledDefenses = choice.defenses.sort(() => Math.random() - 0.5);
-            
-            shuffledDefenses.forEach(def => {
-                const btn = document.createElement('button');
-                btn.className = "btn-cyber text-left p-4 border border-gray-700 bg-cyber-panel hover:bg-gray-800 rounded text-sm text-gray-300";
-                btn.innerText = def.texte;
-                btn.onclick = () => handleDefense(def);
-                defContainer.appendChild(btn);
+            // Afficher Modal d'Audit
+            document.getElementById('sim-options-grid').classList.add('hidden');
+            const auditModal = document.getElementById('audit-modal');
+            auditModal.classList.remove('hidden');
+
+            document.getElementById('audit-question-text').innerText = opt.auditQ;
+            const auditGrid = document.getElementById('audit-options-grid');
+            auditGrid.innerHTML = '';
+
+            opt.auditOpts.forEach(aOpt => {
+                const aBtn = document.createElement('button');
+                aBtn.className = "btn-arcade w-full p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-purple-800 text-left text-xs text-slate-300 font-medium";
+                aBtn.innerText = aOpt.text;
+                aBtn.onclick = () => answerAudit(aOpt);
+                auditGrid.appendChild(aBtn);
             });
         }
 
-        function handleDefense(defense) {
-            if(!defense.correct) {
-                // Malus pour mauvaise défense
-                state.cynisme += 15;
-                state.budget -= 20000;
-                alert(`⚠️ OBJECTION REJETÉE : ${defense.msg}\n\nPénalité : +15% Cynisme, -20.000 €`);
+        function answerAudit(aOpt) {
+            if(aOpt.correct) {
+                AudioSys.success();
+                state.score += 50;
+                alert(`✅ EXCELLENTE DÉFENSE ACADÉMIQUE !\n\n${aOpt.exp}`);
             } else {
-                alert(`✅ DÉFENSE ACCEPTÉE : ${defense.msg}`);
+                AudioSys.error();
+                state.cynisme += 10;
+                alert(`❌ ERREUR D'APPRÉCIATION THÉORIQUE !\n\n${aOpt.exp}`);
             }
-            
+
             updateHUD();
-            state.turn++;
-            
-            document.getElementById('screen-audit').classList.add('hidden');
-            document.getElementById('screen-decision').classList.remove('hidden');
-            renderTurn();
+            state.currentIdx++;
+            loadSimulationCase();
         }
 
-        function triggerGameOver(reason) {
-            document.getElementById('screen-decision').classList.add('hidden');
-            document.getElementById('screen-audit').classList.add('hidden');
-            const ep = document.getElementById('screen-epilogue');
-            ep.classList.remove('hidden');
+        function finishSimulation() {
+            showScreen('screen-summary');
             
-            document.querySelector('#screen-epilogue h2').innerText = "TERMINAISON DU CONTRAT";
-            document.querySelector('#screen-epilogue h2').className = "text-3xl font-mono text-cyber-danger";
-            
-            document.getElementById('epilogue-text').innerHTML = `
-                <span class="text-cyber-danger font-bold text-xl">DÉSASTRE MANAGÉRIAL</span><br><br>
-                ${reason}
-            `;
-            renderRadar();
-        }
-
-        function renderEpilogue() {
-            document.getElementById('screen-decision').classList.add('hidden');
-            document.getElementById('screen-epilogue').classList.remove('hidden');
+            const note = Math.min(20, Math.max(4, (state.score / 900 * 12 + 8))).toFixed(1);
+            document.getElementById('summary-score').innerText = `${note} / 20`;
 
             let narrative = "";
-            let avgJustice = (state.justice.dist + state.justice.proc + state.justice.inter + state.justice.info) / 4;
-
-            if (state.cynisme < 30 && avgJustice > 70) {
-                narrative = "<strong>Bilan 2031 : L'Âge d'Or.</strong><br><br>Vos décisions ont forgé une culture d'entreprise robuste. Bien que certaines mesures aient été difficiles, la perception d'équité (Fair Process Effect) a cimenté la loyauté de vos équipes. L'entreprise est certifiée 'Great Place to Work' et votre budget est sain.";
-            } else if (state.cynisme > 70) {
-                narrative = "<strong>Bilan 2031 : L'Hémorragie.</strong><br><br>Vous avez peut-être sauvé les meubles financiers, mais à quel prix ? L'ambiance est toxique, la justice interpersonnelle est morte. Le turnover est à 35% et les meilleurs talents partent chez la concurrence. Vous êtes un gestionnaire froid, pas un leader.";
-            } else if (state.budget < 500000) {
-                narrative = "<strong>Bilan 2031 : Le Club Med.</strong><br><br>Les employés vous adorent, le cynisme est bas... mais l'entreprise est exsangue. Vos décisions, trop généreuses ou coûteuses (Justice à tout prix), ont plombé la compétitivité de la boîte. Une OPA hostile est en cours.";
+            if(note >= 16) {
+                narrative = "Remarquable ! Vous avez piloté l'entreprise avec une maîtrise scientifique absolue de Cropanzano et al. (2007). Vos décisions équilibrées ont maintenu la loyauté tout en préservant la santé financière.";
+            } else if(note >= 10) {
+                narrative = "Gestion honorable ! Vous avez évité les pires écueils sociaux, mais certaines faiblesses en justice procédurale ou interactionnelle ont créé des tensions évitables.";
             } else {
-                narrative = "<strong>Bilan 2031 : Le Stagnant.</strong><br><br>Une gestion en demi-teinte. Vous avez évité les catastrophes majeures, mais l'inconstance de vos politiques de justice a créé des clans au sein de l'entreprise. Un mandat oubliable.";
+                narrative = "Bilan critique ! Vos choix unilatéraux ont provoqué une hausse massive du cynisme organisationnel et des risques juridiques Prud'hommes.";
             }
 
-            document.getElementById('epilogue-text').innerHTML = narrative;
-            renderRadar();
+            document.getElementById('summary-narrative').innerText = narrative;
+            renderRadarChart();
         }
 
-        function renderRadar() {
-            const ctx = document.getElementById('justiceRadar').getContext('2d');
-            if(radarChart) radarChart.destroy();
+        // MODE BLITZ QUIZ
+        function startBlitz() {
+            state.blitzIdx = 0;
+            state.blitzScore = 0;
+            showScreen('screen-blitz');
+            loadBlitzQuestion();
+        }
 
-            radarChart = new Chart(ctx, {
+        function loadBlitzQuestion() {
+            if(state.blitzIdx >= BLITZ_QUESTIONS.length) {
+                AudioSys.success();
+                alert(`Blitz Terminé ! Score : ${state.blitzScore} / ${BLITZ_QUESTIONS.length}`);
+                return showScreen('screen-menu');
+            }
+
+            const q = BLITZ_QUESTIONS[state.blitzIdx];
+            document.getElementById('blitz-count').innerText = `${state.blitzIdx + 1} / ${BLITZ_QUESTIONS.length}`;
+            document.getElementById('blitz-question-text').innerText = q.q;
+
+            const grid = document.getElementById('blitz-answers-grid');
+            grid.innerHTML = '';
+
+            q.ans.forEach((ansText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "btn-arcade w-full p-4 rounded-xl bg-arcade-card hover:bg-purple-900 border border-purple-800 text-left text-xs md:text-sm text-slate-200 font-medium";
+                btn.innerText = ansText;
+                btn.onclick = () => {
+                    if(idx === q.correct) {
+                        AudioSys.success();
+                        state.blitzScore++;
+                        alert(`Correct ! ${q.exp}`);
+                    } else {
+                        AudioSys.error();
+                        alert(`Incorrect ! ${q.exp}`);
+                    }
+                    state.blitzIdx++;
+                    loadBlitzQuestion();
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        // RENDU CODEX
+        function renderCodex() {
+            const list = document.getElementById('codex-list');
+            list.innerHTML = '';
+            CODEX_DATA.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-arcade-card p-4 rounded-2xl border border-purple-800 space-y-2";
+                card.innerHTML = `
+                    <h4 class="font-bold text-sm text-arcade-cyan">${item.title}</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed font-medium">${item.desc}</p>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function filterCodex() {
+            const query = document.getElementById('codex-search').value.toLowerCase();
+            const filtered = CODEX_DATA.filter(i => i.title.toLowerCase().includes(query) || i.desc.toLowerCase().includes(query));
+            const list = document.getElementById('codex-list');
+            list.innerHTML = '';
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-arcade-card p-4 rounded-2xl border border-purple-800 space-y-2";
+                card.innerHTML = `
+                    <h4 class="font-bold text-sm text-arcade-cyan">${item.title}</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed font-medium">${item.desc}</p>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // RENDU CHART RADAR
+        function renderRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            if(radarChartInstance) radarChartInstance.destroy();
+
+            radarChartInstance = new Chart(ctx, {
                 type: 'radar',
                 data: {
                     labels: ['Distributive', 'Procédurale', 'Interpersonnelle', 'Informationnelle'],
                     datasets: [{
                         label: 'Profil Justice (%)',
                         data: [state.justice.dist, state.justice.proc, state.justice.inter, state.justice.info],
-                        backgroundColor: 'rgba(0, 240, 255, 0.2)',
-                        borderColor: '#00f0ff',
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#00f0ff',
+                        backgroundColor: 'rgba(0, 240, 255, 0.25)',
+                        borderColor: '#00F0FF',
+                        pointBackgroundColor: '#FF007F'
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         r: {
-                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            pointLabels: { color: '#a0a0a0', font: { family: "'Share Tech Mono', monospace" } },
-                            ticks: { display: false, min: 0, max: 100 }
+                            angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                            pointLabels: { color: '#00F0FF', font: { size: 10, weight: 'bold' } },
+                            ticks: { display: false },
+                            suggestedMin: 0, suggestedMax: 100
                         }
                     },
                     plugins: { legend: { display: false } }
                 }
             });
         }
+
+        // GENERATEUR DE PDF REPORT
+        function generatePDFReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const name = document.getElementById('student-name').value || "Étudiant(e)";
+            const note = document.getElementById('summary-score').innerText;
+
+            doc.setFontSize(18);
+            doc.setTextColor(18, 7, 43);
+            doc.text("CERTIFICAT D'AUDIT EN JUSTICE ORGANISATIONNELLE", 10, 20);
+
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            doc.text("Référence : Cropanzano, Bowen & Gilliland (2007)", 10, 28);
+            doc.text(`Candidat(e) : ${name}`, 10, 36);
+            doc.text(`Date de validation : ${new Date().toLocaleDateString('fr-FR')}`, 10, 42);
+            doc.text(`EVALUATION FINALE : ${note}`, 10, 50);
+
+            doc.line(10, 55, 200, 55);
+
+            doc.setFontSize(11);
+            doc.setTextColor(0);
+            doc.text("Profil de Compétences Validé :", 10, 65);
+            doc.text(`- Justice Distributive : ${state.justice.dist} / 100`, 15, 73);
+            doc.text(`- Justice Procédurale : ${state.justice.proc} / 100`, 15, 80);
+            doc.text(`- Justice Interpersonnelle : ${state.justice.inter} / 100`, 15, 87);
+            doc.text(`- Justice Informationnelle : ${state.justice.info} / 100`, 15, 94);
+
+            doc.save(`Certificat_Justice_RH_${name.replace(/\s+/g, '_')}.pdf`);
+        }
+
+        window.onload = function() { updateHUD(); };
     </script>
 </body>
 </html>
