@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JUSTICE EMPIRE: NEUROVERSE — Living Office RPG</title>
+<style>
+:root{--bg:#090b18;--panel:#131831;--panel2:#1a2141;--line:#343e70;--cyan:#65f4ff;--pink:#ff5abf;--gold:#ffd166;--green:#7dffb2;--red:#ff6b7d;--text:#f4f5ff;--muted:#a8b1d5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#31245e 0,#10132a 43%,var(--bg) 80%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;color:inherit}.wrap{max-width:1200px;margin:auto;padding:20px}.top{position:sticky;top:0;z-index:5;background:#0c1024eF;border-bottom:1px solid #303960;backdrop-filter:blur(14px)}.topin{max-width:1200px;margin:auto;padding:12px 20px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}.brand{display:flex;gap:11px;align-items:center}.logo{height:43px;width:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,var(--pink),var(--cyan));color:#090b18;font-size:22px;font-weight:1000;box-shadow:0 0 24px #ff5abf40}.brand h1{font-size:13px;letter-spacing:1.8px;margin:0;color:var(--cyan)}.brand small{color:var(--muted);font-size:10px;letter-spacing:1px}.hud{display:flex;gap:8px;flex-wrap:wrap}.pill{padding:8px 11px;border:1px solid var(--line);border-radius:12px;background:#11162c;font-size:12px;color:var(--muted)}.pill b{color:var(--gold)}.nav{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}.nav button,.btn{padding:10px 13px;border-radius:11px;background:#20284d;border:1px solid #3b477c;font-weight:750;font-size:12px;transition:.18s}.nav button:hover,.btn:hover{transform:translateY(-2px);border-color:var(--cyan)}.nav button.active,.primary{background:linear-gradient(100deg,#ff5abf,#8e7bff);color:#100d22;border-color:transparent}.secondary{background:#11162c}.danger{border-color:#8c394f;background:#351929}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:linear-gradient(150deg,#1b2141,#11162b);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 34px #0002}.span12{grid-column:span 12}.span8{grid-column:span 8}.span7{grid-column:span 7}.span6{grid-column:span 6}.span5{grid-column:span 5}.span4{grid-column:span 4}.eyebrow{color:var(--pink);font-size:10px;font-weight:900;letter-spacing:1.8px;text-transform:uppercase}.hero{padding:28px;background:linear-gradient(115deg,#211943,#131a37 65%,#102b40);position:relative;overflow:hidden}.hero:after{content:"✦";position:absolute;font-size:180px;right:4%;top:-48px;color:#65f4ff0c}.hero h2{font-size:clamp(28px,4vw,48px);line-height:1.05;margin:12px 0}.hero h2 em{font-style:normal;color:var(--cyan)}.hero p{max-width:700px;color:var(--muted);line-height:1.6}.subhead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.subhead h2,.subhead h3{margin:4px 0}.muted{color:var(--muted)}.small{font-size:12px;line-height:1.55}.bigstat{font-size:30px;font-weight:900;letter-spacing:-1px}.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.stat{padding:13px;border-radius:13px;background:#0d1227;border:1px solid #29345f}.stat label{display:block;font-size:10px;color:var(--muted);margin-bottom:5px}.bar{height:7px;background:#080c1a;border-radius:99px;overflow:hidden;margin-top:8px}.bar span{height:100%;display:block;background:linear-gradient(90deg,var(--pink),var(--cyan));border-radius:99px;transition:width .35s}.casehead{display:flex;gap:13px;align-items:center}.avatar{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#3b2b65,#12455b);display:grid;place-items:center;font-size:27px;border:1px solid #56649a;flex-shrink:0}.casequote{font-size:16px;line-height:1.7;background:#0c1125;border-left:3px solid var(--pink);padding:17px;border-radius:0 12px 12px 0;margin:17px 0}.options{display:grid;gap:9px}.option{text-align:left;width:100%;padding:14px;border-radius:13px;background:#171e3b;border:1px solid #394571;display:flex;gap:12px;align-items:flex-start}.option:hover{border-color:var(--cyan);background:#20294b}.option .letter{width:27px;height:27px;border-radius:8px;background:#2c355e;display:grid;place-items:center;font-weight:900;flex-shrink:0}.option:disabled{cursor:default;opacity:.8}.feedback{padding:16px;border-radius:14px;margin-top:13px;border:1px solid #476c68;background:#102a2c}.feedback.bad{border-color:#874356;background:#321b2b}.feedback h4{margin:0 0 7px}.feedback p{margin:7px 0;line-height:1.55;font-size:13px}.tag{display:inline-block;font-size:10px;padding:5px 8px;border-radius:7px;background:#293354;color:var(--cyan);margin:3px 4px 3px 0}.person{display:flex;gap:11px;align-items:flex-start}.person .avatar{width:45px;height:45px;font-size:22px}.person h4{margin:0 0 4px}.meterline{display:flex;align-items:center;gap:8px;margin:9px 0;font-size:11px}.meterline label{width:105px;color:var(--muted)}.meterline .bar{flex:1;margin:0}.meterline b{width:28px;text-align:right}.event{border-left:2px solid #5d6b9f;padding:2px 0 13px 13px;margin-left:5px}.event:last-child{padding-bottom:0}.event strong{font-size:12px}.event p{margin:4px 0;font-size:12px;color:var(--muted);line-height:1.5}.toast{position:fixed;right:20px;bottom:20px;z-index:10;background:#19294a;border:1px solid var(--cyan);padding:13px 17px;border-radius:12px;box-shadow:0 12px 40px #0008;max-width:330px;display:none}.screen{display:none}.screen.active{display:block;animation:rise .22s ease}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.choicegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.module{cursor:pointer;transition:.2s}.module:hover{transform:translateY(-3px);border-color:var(--cyan)}.module .icon{font-size:26px}.module h3{margin:10px 0 7px}.module p{font-size:12px;color:var(--muted);line-height:1.5}.progressline{height:5px;background:#080c1a;border-radius:99px;overflow:hidden}.progressline span{height:100%;display:block;background:var(--green)}.answerline{padding:12px;background:#0e142b;border:1px solid #29345f;border-radius:11px;margin:8px 0;font-size:12px;line-height:1.5}.field{width:100%;padding:11px;background:#0b1023;color:var(--text);border:1px solid var(--line);border-radius:10px;margin:5px 0 12px}.badge{font-size:10px;padding:5px 8px;border:1px solid #56638f;border-radius:8px;color:var(--gold)}.footer{padding:30px 0;text-align:center;color:#737fa9;font-size:11px}.empty{padding:28px;text-align:center;color:var(--muted)}.flash{font-size:clamp(19px,3vw,26px);line-height:1.5;font-weight:750}.flashanswer{display:none}.flashanswer.show{display:block}.flashbuttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:800px){.span8,.span7,.span6,.span5,.span4{grid-column:span 12}.choicegrid{grid-template-columns:1fr}.statrow{grid-template-columns:repeat(2,1fr)}.wrap{padding:13px}.hero{padding:22px}.casequote{font-size:14px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="topin">
+ <div class="brand"><div class="logo">⚖</div><div><h1>JUSTICE EMPIRE: NEUROVERSE</h1><small>THE LIVING ORGANIZATION RPG</small></div></div>
+ <div class="hud"><div class="pill">✦ Niveau <b id="hudLevel">1</b></div><div class="pill">⚡ XP <b id="hudXP">0</b></div><div class="pill">🪙 <b id="hudCoins">0</b></div><div class="pill">🗓 Jour <b id="hudDay">1</b></div></div>
+</div></header>
+<div class="wrap">
+ <nav class="nav" id="nav">
+  <button class="active" data-screen="home">🏠 Quartier général</button><button data-screen="story">🎭 Histoire vivante</button><button data-screen="lab">🧠 Laboratoire</button><button data-screen="codex">📚 Codex</button><button data-screen="profile">📊 Profil & sauvegarde</button>
+ </nav>
+ <section id="home" class="screen active">
+  <div class="card hero">
+   <div class="eyebrow">Saison 01 · Le coût de l'injustice</div>
+   <h2>Une organisation.<br><em>Mille conséquences.</em></h2>
+   <p>Tu n'apprends pas seulement les théories de la psychologie du travail. Tu diriges une entreprise vivante. Les gens se souviennent de tes décisions, les équipes changent de comportement et les problèmes d'hier deviennent les crises de demain.</p>
+   <button class="btn primary" onclick="go('story')">Reprendre la campagne →</button> <button class="btn secondary" onclick="startNew()">Nouvelle partie</button>
+  </div>
+  <div class="grid" style="margin-top:14px">
+   <div class="card span12"><div class="subhead"><div><div class="eyebrow">Tableau de bord</div><h3>La santé de ton organisation</h3></div><span class="badge" id="orgStatus">Équilibre fragile</span></div>
+    <div class="statrow">
+     <div class="stat"><label>Confiance collective</label><div class="bigstat" id="sTrust">62</div><div class="bar"><span id="bTrust" style="width:62%"></span></div></div>
+     <div class="stat"><label>Climat social</label><div class="bigstat" id="sClimate">58</div><div class="bar"><span id="bClimate" style="width:58%"></span></div></div>
+     <div class="stat"><label>Performance</label><div class="bigstat" id="sPerformance">55</div><div class="bar"><span id="bPerformance" style="width:55%"></span></div></div>
+     <div class="stat"><label>Équité perçue</label><div class="bigstat" id="sFairness">60</div><div class="bar"><span id="bFairness" style="width:60%"></span></div></div>
+    </div>
+   </div>
+   <div class="card span7"><div class="subhead"><div><div class="eyebrow">Mission en cours</div><h3 id="homeMission">Le salaire fantôme</h3></div><span class="badge" id="homeChapter">Chapitre 1 / 6</span></div><p class="muted small" id="homeDesc">Un changement de rémunération menace la confiance de l'équipe.</p><button class="btn primary" onclick="go('story')">Entrer dans la salle de décision</button></div>
+   <div class="card span5"><div class="eyebrow">Mémoire sociale</div><h3>Ils se souviennent.</h3><div id="memoryPreview" class="small muted">Tes choix façonneront les relations au fil de la campagne.</div><div style="margin-top:12px"><button class="btn secondary" onclick="go('profile')">Voir les conséquences →</button></div></div>
+   <div class="card span12"><div class="subhead"><div><div class="eyebrow">Portes d'entraînement</div><h3>Choisis ton terrain</h3></div></div><div class="choicegrid">
+    <div class="card module" onclick="go('story')"><div class="icon">🎭</div><h3>Campagne narrative</h3><p>Des dilemmes à embranchements, des personnages qui gardent une mémoire et des conséquences persistantes.</p></div>
+    <div class="card module" onclick="go('lab')"><div class="icon">🧠</div><h3>Laboratoire de compétences</h3><p>Micro-défis sur les biais, le feedback, l'écoute active et la justice organisationnelle.</p></div>
+    <div class="card module" onclick="go('codex')"><div class="icon">📚</div><h3>Codex scientifique</h3><p>Transforme les concepts en réflexes. Comprends pourquoi une réponse fonctionne.</p></div>
+   </div></div>
+  </div>
+ </section>
+ <section id="story" class="screen">
+  <div class="grid">
+   <div class="card span8">
+    <div class="subhead"><div><div class="eyebrow" id="storyEyebrow">Chapitre 1 · Rémunération</div><h2 id="storyTitle">Le salaire fantôme</h2></div><span class="badge" id="storyStep">Décision 1 / 6</span></div>
+    <div class="casehead"><div class="avatar" id="speakerAvatar">👩‍💼</div><div><h3 id="speakerName">Maya Laurent</h3><div class="muted small" id="speakerRole">Responsable d'équipe</div><div id="speakerMood" class="tag">Confiance prudente</div></div></div>
+    <div class="casequote" id="storyText"></div>
+    <div class="eyebrow">Quelle est ta décision ?</div><div class="options" id="storyOptions"></div>
+    <div id="storyFeedback"></div>
+    <div style="margin-top:14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><button class="btn secondary" onclick="go('home')">← Quartier général</button><button class="btn" onclick="showJournal()">Journal des conséquences</button></div>
+   </div>
+   <div class="card span4">
+    <div class="eyebrow">État du système</div><h3>Les jauges bougent.</h3>
+    <div id="storyMeters"></div><hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+    <div class="eyebrow">Personnages persistants</div><div id="peopleList"></div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><div class="eyebrow">Fil des événements</div><div id="eventLog"></div>
+   </div>
+  </div>
+ </section>
+ <section id="lab" class="screen">
+  <div class="card hero"><div class="eyebrow">Entraînement adaptatif · Mode bac à sable</div><h2>Le laboratoire<br><em>des réflexes justes.</em></h2><p>Des défis courts pour pratiquer une compétence à la fois. Ce mode n'affecte pas les relations de la campagne, mais te rapporte de l'expérience.</p></div>
+  <div class="grid" style="margin-top:14px">
+   <div class="card span6"><div class="eyebrow">Défi 01 · Biais cognitif</div><h3>Le piège de confirmation</h3><p class="muted small">Un manager ne retient que les erreurs d'un employé qu'il juge « peu motivé » et ignore ses réussites. Quel biais est le plus évident ?</p><div class="options" id="labBias"></div><div id="labBiasFeedback"></div></div>
+   <div class="card span6"><div class="eyebrow">Défi 02 · Feedback</div><h3>Dire les choses sans écraser la personne</h3><p class="muted small">Un collaborateur a raté deux échéances. Choisis la formulation la plus utile.</p><div class="options" id="labFeedback"></div><div id="labFeedbackFeedback"></div></div>
+   <div class="card span6"><div class="eyebrow">Défi 03 · Justice procédurale</div><h3>Le droit de parole</h3><p class="muted small">Deux équipes contestent une répartition de budget. Quelle pratique renforce le plus la justice procédurale ?</p><div class="options" id="labVoice"></div><div id="labVoiceFeedback"></div></div>
+   <div class="card span6"><div class="eyebrow">Défi 04 · Écoute active</div><h3>La conversation difficile</h3><p class="muted small">Une employée dit : « Ici, quoi que je fasse, la décision est déjà prise. » Quelle réponse ouvre vraiment le dialogue ?</p><div class="options" id="labListen"></div><div id="labListenFeedback"></div></div>
+  </div>
+ </section>
+ <section id="codex" class="screen">
+  <div class="card hero"><div class="eyebrow">Bibliothèque de poche</div><h2>Le savoir est une <em>arme de précision.</em></h2><p>Des rappels synthétiques pour relier la théorie aux décisions. Les références ci-dessous sont des points de départ, pas une preuve que chaque situation possède une solution unique.</p></div>
+  <div class="grid" id="codexCards" style="margin-top:14px"></div>
+ </section>
+ <section id="profile" class="screen">
+  <div class="grid">
+   <div class="card span7"><div class="eyebrow">Profil du décideur</div><h2>Ton empreinte managériale</h2><p class="muted small">Ce profil décrit les choix effectués dans cette partie. Il ne s'agit ni d'un diagnostic psychologique ni d'une mesure validée.</p><div id="profileMeters"></div><div class="statrow" style="margin-top:16px"><div class="stat"><label>Décisions prises</label><div class="bigstat" id="pDecisions">0</div></div><div class="stat"><label>Défis réussis</label><div class="bigstat" id="pCorrect">0</div></div><div class="stat"><label>XP total</label><div class="bigstat" id="pXP">0</div></div><div class="stat"><label>Jours écoulés</label><div class="bigstat" id="pDays">1</div></div></div></div>
+   <div class="card span5"><div class="eyebrow">Les gens n'oublient pas</div><h3>Fiche de relations</h3><div id="profilePeople"></div><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><h3>Journal des décisions</h3><div id="fullJournal"></div></div>
+   <div class="card span12"><div class="subhead"><div><div class="eyebrow">Sauvegarde locale</div><h3>Ta partie, tes règles</h3></div><span class="badge">Stockée dans ce navigateur</span></div><p class="muted small">La sauvegarde reste sur cet appareil et dans ce navigateur. Elle ne se synchronise pas automatiquement entre appareils.</p><button class="btn primary" onclick="saveGame(true)">Sauvegarder maintenant</button> <button class="btn secondary" onclick="exportSave()">Exporter la sauvegarde</button> <button class="btn secondary" onclick="document.getElementById('importFile').click()">Importer</button> <input id="importFile" type="file" accept="application/json" hidden onchange="importSave(event)"> <button class="btn danger" onclick="resetGame()">Effacer la partie</button><p id="saveStatus" class="small muted"></p></div>
+  </div>
+ </section>
+ <div class="footer">NEUROVERSE · Apprendre à décider, sans prétendre qu'une jauge résume l'humain. <br>Prototype pédagogique, scénarios fictifs et conséquences simulées.</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const chapters=[
+{title:"Le salaire fantôme",theme:"Rémunération & justice distributive",person:"Maya Laurent",role:"Responsable d'équipe",avatar:"👩‍💼",mood:"Inquiète mais ouverte",text:"Deux analystes ont appris que leur collègue, arrivé plus tard, gagne davantage. Maya te dit : « Je ne demande pas que tout le monde touche la même chose. Je demande qu'on puisse expliquer la différence sans inventer une histoire après coup. »",choices:[
+{text:"Publier immédiatement tous les salaires pour couper court aux rumeurs.",why:"La transparence peut aider, mais une publication brute sans contexte peut exposer les personnes et amplifier les comparaisons. Il faut expliquer les critères, protéger les données et permettre des questions.",effects:{trust:-2,climate:-2,performance:0,fairness:3},people:{maya:1,leo:0},skill:"informationnelle",xp:12},
+{text:"Auditer les écarts, clarifier les critères de rémunération et ouvrir un entretien confidentiel.",why:"Tu combines vérification des résultats, critères explicites et espace de dialogue. La justice distributive porte sur le résultat; la justice informationnelle sur la qualité des explications. Le processus doit aussi être cohérent et corrigeable.",effects:{trust:8,climate:5,performance:3,fairness:10},people:{maya:8,leo:3},skill:"procédurale",xp:25},
+{text:"Dire que les salaires sont confidentiels et que la direction ne débat pas de ses décisions.",why:"Tu fermes le dialogue sans traiter la question de fond. Le silence peut être interprété comme une absence de critères ou une volonté de dissimuler les incohérences.",effects:{trust:-8,climate:-6,performance:-2,fairness:-8},people:{maya:-8,leo:-3},skill:"écoute",xp:5}]},
+{title:"Le silence en réunion",theme:"Voice & justice procédurale",person:"Nabil Benali",role:"Ingénieur senior",avatar:"🧑🏽‍💻",mood:"Frustré, sur la réserve",text:"En réunion, Nabil tente de signaler un risque opérationnel. La directrice l'interrompt : « On n'a pas le temps pour ça. » Après la réunion, il te prévient que le risque pourrait retarder le lancement. Comment réagis-tu ?",choices:[
+{text:"Organiser une audition courte, écouter les éléments, puis expliquer les critères de décision.",why:"La possibilité de s'exprimer (voice) ne signifie pas que chacun obtient ce qu'il demande. Elle améliore la qualité de l'information et la perception d'un processus équitable si l'écoute est réelle et les critères cohérents.",effects:{trust:8,climate:7,performance:8,fairness:7},people:{nabil:10,maya:2},skill:"procédurale",xp:25},
+{text:"Rappeler à Nabil que les décisions appartiennent à la direction.",why:"L'autorité formelle ne remplace pas l'information utile. Tu risques de décourager les remontées de problèmes et de transformer le silence en fausse impression de consensus.",effects:{trust:-7,climate:-5,performance:-8,fairness:-4},people:{nabil:-10,maya:-2},skill:"écoute",xp:5},
+{text:"Annuler le lancement immédiatement, sans examiner le risque.",why:"Tu prends le signal au sérieux, mais tu confonds écoute et adhésion automatique. Une procédure juste examine les preuves, les options et les conséquences avant de trancher.",effects:{trust:1,climate:1,performance:-5,fairness:0},people:{nabil:3,maya:0},skill:"analyse",xp:10}]},
+{title:"Le feedback qui pique",theme:"Évaluation & due process",person:"Inès Moreau",role:"Cheffe de projet",avatar:"👩🏻‍🔬",mood:"Sur la défensive",text:"Inès reçoit une évaluation « en dessous des attentes » sans exemples concrets. Elle te dit : « On ne m'a jamais expliqué ce qui comptait, et maintenant on me reproche de ne pas l'avoir fait. » Quelle suite donnes-tu ?",choices:[
+{text:"Maintenir la note pour ne pas perdre en crédibilité, puis lui conseiller de faire mieux.",why:"Une note sans critères communiqués ni éléments observables semble arbitraire. La crédibilité managériale vient davantage d'un processus défendable que du refus de reconnaître une erreur.",effects:{trust:-9,climate:-5,performance:-4,fairness:-10},people:{ines:-10,nabil:-1},skill:"informationnelle",xp:5},
+{text:"Réexaminer les preuves, partager les critères, entendre sa réponse et convenir d'objectifs mesurables.",why:"Le modèle de due process appliqué à l'évaluation met l'accent sur la notification préalable, la possibilité de répondre et les preuves pertinentes. Un entretien devient un outil de progression plutôt qu'un verdict opaque.",effects:{trust:9,climate:6,performance:7,fairness:10},people:{ines:10,nabil:2},skill:"procédurale",xp:25},
+{text:"Supprimer toutes les évaluations pour éviter les conflits.",why:"Éviter une conversation difficile ne règle pas les problèmes de performance. L'enjeu est de construire une évaluation compréhensible, cohérente et contestable, pas de supprimer toute exigence.",effects:{trust:1,climate:2,performance:-6,fairness:0},people:{ines:3,nabil:0},skill:"feedback",xp:10}]},
+{title:"La restructuration",theme:"Justice interactionnelle",person:"Leo Vasseur",role:"Représentant du personnel",avatar:"🧔🏻",mood:"Vigilant",text:"Une restructuration devient inévitable. Les postes concernés doivent être annoncés vendredi. Leo te dit : « Les gens savent que les nouvelles seront dures. Ce qu'ils ne pardonneront pas, c'est de l'apprendre par une rumeur ou d'être traités comme des numéros. »",choices:[
+{text:"Envoyer un message standard, puis renvoyer toutes les questions aux RH.",why:"Un message formel peut transmettre une information, mais ne suffit pas à garantir une interaction respectueuse. Les personnes ont besoin d'explications honnêtes, de dignité et d'un interlocuteur.",effects:{trust:-8,climate:-10,performance:-5,fairness:-5},people:{leo:-10,maya:-3},skill:"interpersonnelle",xp:5},
+{text:"Préparer des entretiens individuels respectueux, expliquer ce qui est connu et inconnu, et détailler les soutiens disponibles.",why:"Tu ne peux pas rendre une décision douloureuse indolore, mais tu peux préserver la dignité, donner des informations fiables et reconnaître l'incertitude. Évite les promesses que tu ne peux pas tenir.",effects:{trust:8,climate:7,performance:1,fairness:7},people:{leo:9,maya:4},skill:"interpersonnelle",xp:25},
+{text:"Promettre qu'aucun autre poste ne sera supprimé pour calmer les équipes.",why:"Une promesse non maîtrisée peut acheter quelques heures de calme et détruire la confiance plus tard. Mieux vaut être transparent sur les limites de ce que tu sais.",effects:{trust:2,climate:3,performance:0,fairness:0},people:{leo:1,maya:0},skill:"informationnelle",xp:10}]},
+{title:"La prime qui divise",theme:"Équité, égalité & coopération",person:"Maya Laurent",role:"Responsable d'équipe",avatar:"👩‍💼",mood:"Attentive à la cohésion",text:"La direction veut donner une prime très élevée aux deux meilleurs résultats individuels. Les tâches sont pourtant interdépendantes et plusieurs personnes assurent le travail invisible qui permet aux autres de réussir. Comment structures-tu la prime ?",choices:[
+{text:"Récompenser uniquement les deux scores les plus élevés.",why:"Une récompense individuelle peut être adaptée à certains objectifs, mais ignorer l'interdépendance peut inciter à optimiser son score plutôt que la performance collective. Le système doit refléter le travail réellement attendu.",effects:{trust:-5,climate:-8,performance:-2,fairness:-5},people:{maya:-5,ines:-3},skill:"distributive",xp:5},
+{text:"Combiner un socle commun, des critères individuels transparents et une composante collective adaptée au travail d'équipe.",why:"Tu explicites plusieurs logiques de répartition sans prétendre qu'une formule est universelle. Le système doit rester cohérent avec les objectifs, les contributions mesurables et les contraintes de l'équipe.",effects:{trust:7,climate:8,performance:6,fairness:8},people:{maya:7,ines:4},skill:"distributive",xp:25},
+{text:"Donner exactement la même prime à tout le monde, quelles que soient les responsabilités.",why:"L'égalité peut soutenir un sentiment d'appartenance, mais une égalité mécanique peut être perçue comme injuste si les contributions, contraintes ou responsabilités diffèrent. Il faut justifier la règle choisie.",effects:{trust:1,climate:4,performance:-2,fairness:1},people:{maya:1,ines:1},skill:"distributive",xp:10}]},
+{title:"Le dernier mot",theme:"Éthique & cohérence",person:"Nabil Benali",role:"Ingénieur senior",avatar:"🧑🏽‍💻",mood:"Observe tes actes",text:"Une personne proche de la direction a enfreint une règle de sécurité. Une sanction sévère est prévue pour un autre salarié dans une situation comparable. L'équipe observe ce que tu vas faire. Comment décides-tu ?",choices:[
+{text:"Faire une exception discrète pour protéger la personne influente.",why:"L'incohérence et le favoritisme minent la légitimité des règles. Les principes de justice procédurale incluent notamment la cohérence et l'absence de biais.",effects:{trust:-10,climate:-7,performance:-3,fairness:-10},people:{nabil:-8,leo:-4},skill:"éthique",xp:5},
+{text:"Examiner les faits avec les mêmes critères, entendre les personnes concernées et motiver la décision.",why:"Une décision défendable repose sur des critères cohérents, des preuves et la possibilité de répondre. La même procédure n'impose pas forcément une sanction identique si des faits pertinents diffèrent, mais toute différence doit être justifiée.",effects:{trust:10,climate:6,performance:5,fairness:10},people:{nabil:8,leo:5},skill:"éthique",xp:25},
+{text:"Sanctionner les deux personnes de façon identique sans examiner les circonstances.",why:"La cohérence ne veut pas dire ignorer les faits. Une règle équitable applique des critères stables tout en tenant compte des différences réellement pertinentes.",effects:{trust:0,climate:-1,performance:0,fairness:-2},people:{nabil:1,leo:0},skill:"analyse",xp:10}]}
+];
+const peopleSeed={maya:{name:"Maya Laurent",role:"Responsable d'équipe",avatar:"👩‍💼",trust:52,note:"Veut des critères explicites et une cohésion solide."},nabil:{name:"Nabil Benali",role:"Ingénieur senior",avatar:"🧑🏽‍💻",trust:50,note:"Observe si les alertes sont réellement entendues."},ines:{name:"Inès Moreau",role:"Cheffe de projet",avatar:"👩🏻‍🔬",trust:50,note:"A besoin d'objectifs clairs et de retours concrets."},leo:{name:"Leo Vasseur",role:"Représentant du personnel",avatar:"🧔🏻",trust:50,note:"Surveille la cohérence entre les paroles et les actes."}};
+const codex=[
+["Justice distributive","Adams (1965)","Perception de l'équité des résultats par rapport aux contributions et aux comparaisons sociales. Équité ne signifie pas automatiquement égalité : le critère de répartition doit être pertinent et compréhensible."],
+["Justice procédurale","Leventhal (1980)","La justice du processus repose notamment sur la cohérence, l'absence de biais, l'exactitude de l'information, la possibilité de corriger une décision, la représentation des personnes concernées et la conformité éthique."],
+["Justice interactionnelle","Bies & Moag (1986)","La manière dont une personne est traitée compte. La dimension interpersonnelle concerne dignité et respect; la dimension informationnelle concerne la qualité, la sincérité et l'adéquation des explications."],
+["Voice et participation","Thibaut & Walker (1975), travaux ultérieurs","Avoir la possibilité d'exprimer son point de vue peut renforcer la perception de justice, même si la décision finale ne correspond pas à la préférence exprimée. Écouter ne veut pas dire céder automatiquement."],
+["Due process en évaluation","Folger, Konovsky & Cropanzano (1992)","Une approche procédurale de l'évaluation souligne la notification préalable des attentes, la possibilité de répondre et l'appui sur des preuves pertinentes."],
+["Biais de confirmation","Psychologie cognitive","Tendance à rechercher ou interpréter l'information d'une façon qui confirme une croyance déjà présente. Contre-mesure : chercher activement des contre-exemples et appliquer des critères explicites."],
+["Feedback utile","Pratique managériale fondée sur les objectifs","Un feedback exploitable décrit un comportement observable, son effet et la prochaine étape attendue. Évite les étiquettes globales sur la personnalité et laisse place à la réponse du collaborateur."],
+["Attention scientifique","À garder en tête","Les scénarios du jeu simplifient la réalité. Les théories éclairent les décisions, mais les effets dépendent du contexte, de la culture, du pouvoir, des règles et des personnes. Une référence ne justifie pas n'importe quel chiffre spectaculaire."]
+];
+const defaults=()=>({v:1,chapter:0,done:[],day:1,xp:0,coins:0,decisions:0,correct:0,stats:{trust:62,climate:58,performance:55,fairness:60},skills:{distributive:0,procedurale:0,interpersonnelle:0,informationnelle:0,écoute:0,analyse:0,feedback:0,éthique:0},people:JSON.parse(JSON.stringify(peopleSeed)),events:[],journal:[],labDone:[],lastChoice:null});
+let S=defaults(),answered=false;
+const clamp=n=>Math.max(0,Math.min(100,Math.round(n)));
+function load(){try{let x=localStorage.getItem("justiceNeuroverseV1");if(x){let parsed=JSON.parse(x);if(parsed&&parsed.v===1)S={...defaults(),...parsed,stats:{...defaults().stats,...parsed.stats},skills:{...defaults().skills,...parsed.skills},people:parsed.people||defaults().people};}}catch(e){}}
+function saveGame(show=false){try{localStorage.setItem("justiceNeuroverseV1",JSON.stringify(S));document.getElementById("saveStatus").textContent="Sauvegarde locale mise à jour à "+new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})+".";if(show)toast("Partie sauvegardée dans ce navigateur ✓");}catch(e){toast("La sauvegarde locale n'est pas disponible dans ce contexte.");}}
+function toast(t){let el=document.getElementById("toast");el.textContent=t;el.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display="none",2600);}
+function go(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));if(id==="story")renderStory();if(id==="home")renderHome();if(id==="profile")renderProfile();if(id==="lab")renderLab();if(id==="codex")renderCodex();window.scrollTo({top:0,behavior:"smooth"});}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.screen)));
+function updateHUD(){document.getElementById("hudLevel").textContent=1+Math.floor(S.xp/100);document.getElementById("hudXP").textContent=S.xp;document.getElementById("hudCoins").textContent=S.coins;document.getElementById("hudDay").textContent=S.day;}
+function renderHome(){updateHUD();for(let k of ["trust","climate","performance","fairness"]){document.getElementById("s"+k[0].toUpperCase()+k.slice(1)).textContent=S.stats[k];document.getElementById("b"+k[0].toUpperCase()+k.slice(1)).style.width=S.stats[k]+"%";}let avg=Object.values(S.stats).reduce((a,b)=>a+b,0)/4;document.getElementById("orgStatus").textContent=avg>72?"Dynamique saine":avg>48?"Équilibre fragile":"Alerte sociale";let idx=Math.min(S.chapter,chapters.length-1),c=chapters[idx];document.getElementById("homeMission").textContent=S.chapter>=chapters.length?"Saison terminée : le bilan":" "+c.title;document.getElementById("homeChapter").textContent=S.chapter>=chapters.length?"Final":"Chapitre "+(idx+1)+" / "+chapters.length;document.getElementById("homeDesc").textContent=S.chapter>=chapters.length?"Tu as traversé les six décisions principales. Relis ton journal pour observer les effets cumulés.":c.theme+" : chaque décision modifie les relations et la santé de l'organisation.";let recent=S.events.slice(-2).reverse();document.getElementById("memoryPreview").innerHTML=recent.length?recent.map(e=>`<div class="event"><strong>${esc(e.title)}</strong><p>${esc(e.text)}</p></div>`).join(""):"Tes personnages commencent avec des attentes différentes. Ils retiendront les actes, pas seulement les discours.";}
+function renderStory(){answered=false;updateHUD();let idx=Math.min(S.chapter,chapters.length-1);if(S.chapter>=chapters.length){document.getElementById("storyEyebrow").textContent="Saison 01 · Bilan";document.getElementById("storyTitle").textContent="L'organisation te répond";document.getElementById("storyStep").textContent="Terminé";document.getElementById("speakerName").textContent="Conseil de direction";document.getElementById("speakerRole").textContent="Bilan de campagne";document.getElementById("speakerAvatar").textContent="🏢";document.getElementById("speakerMood").textContent="Conséquences cumulées";document.getElementById("storyText").textContent="La campagne est terminée. Ta manière de décider a laissé une empreinte. Certaines relations se sont renforcées, d'autres ont besoin d'être réparées. Il n'existe pas de score magique qui résume la qualité d'un manager : regarde les arbitrages, les preuves et les conséquences.";document.getElementById("storyOptions").innerHTML='<button class="btn primary" onclick="renderProfile();go(&quot;profile&quot;)">Lire mon bilan →</button><button class="btn secondary" onclick="startNew()">Recommencer la campagne</button>';document.getElementById("storyFeedback").innerHTML="";renderSide();return;}
+let c=chapters[idx];document.getElementById("storyEyebrow").textContent=`Chapitre ${idx+1} · ${c.theme}`;document.getElementById("storyTitle").textContent=c.title;document.getElementById("storyStep").textContent=`Décision ${idx+1} / ${chapters.length}`;document.getElementById("speakerAvatar").textContent=c.avatar;document.getElementById("speakerName").textContent=c.person;document.getElementById("speakerRole").textContent=c.role;let p=Object.values(S.people).find(p=>p.name===c.person);document.getElementById("speakerMood").textContent=p?mood(p.trust):c.mood;document.getElementById("storyText").textContent=c.text;document.getElementById("storyFeedback").innerHTML="";document.getElementById("storyOptions").innerHTML=c.choices.map((ch,i)=>`<button class="option" onclick="choose(${idx},${i})"><span class="letter">${String.fromCharCode(65+i)}</span><span>${esc(ch.text)}</span></button>`).join("");renderSide();}
+function mood(v){return v>=75?"Confiance solide":v>=58?"Confiance prudente":v>=42?"Réserve":v>=25?"Méfiance":"Rupture de confiance";}
+function renderSide(){document.getElementById("storyMeters").innerHTML=Object.entries({trust:"Confiance",climate:"Climat social",performance:"Performance",fairness:"Équité perçue"}).map(([k,l])=>`<div class="meterline"><label>${l}</label><div class="bar"><span style="width:${S.stats[k]}%"></span></div><b>${S.stats[k]}</b></div>`).join("");document.getElementById("peopleList").innerHTML=Object.entries(S.people).map(([id,p])=>`<div class="person" style="margin:12px 0"><div class="avatar">${p.avatar}</div><div style="flex:1"><h4 style="font-size:12px">${esc(p.name)}</h4><div class="small muted">${mood(p.trust)}</div><div class="bar"><span style="width:${p.trust}%;background:${p.trust<35?'var(--red)':'linear-gradient(90deg,var(--pink),var(--cyan))'}"></span></div></div></div>`).join("");document.getElementById("eventLog").innerHTML=S.events.length?S.events.slice(-4).reverse().map(e=>`<div class="event"><strong>${esc(e.title)}</strong><p>${esc(e.text)}</p></div>`).join(""):'<p class="muted small">Le journal se remplira après ta première décision.</p>';}
+function choose(idx,ci){if(answered)return;answered=true;let c=chapters[idx],ch=c.choices[ci];S.decisions++;S.chapter++;S.day++;S.xp+=ch.xp;S.coins+=Math.max(2,Math.round(ch.xp/5));for(let [k,v] of Object.entries(ch.effects))S.stats[k]=clamp(S.stats[k]+v);if(S.skills[ch.skill]!==undefined)S.skills[ch.skill]+=1;for(let [id,v] of Object.entries(ch.people)){if(S.people[id])S.people[id].trust=clamp(S.people[id].trust+v);}
+S.journal.push({day:S.day-1,title:c.title,person:c.person,choice:ch.text,why:ch.why,effects:ch.effects,skill:ch.skill});S.events.push({title:c.title,text:eventText(c, ch)});S.lastChoice={chapter:idx,choice:ci};if(ch.xp>=20)S.correct++;saveGame();document.getElementById("storyOptions").innerHTML=c.choices.map((x,i)=>`<button class="option" disabled style="${i===ci?'border-color:var(--cyan);background:#1c3150':''}"><span class="letter">${String.fromCharCode(65+i)}</span><span>${esc(x.text)}${i===ci?' ✓':''}</span></button>`).join("");let good=ch.xp>=20;document.getElementById("storyFeedback").innerHTML=`<div class="feedback ${good?'':'bad'}"><h4>${good?'✦ Décision réfléchie':'⚠ Conséquences à surveiller'} · +${ch.xp} XP</h4><p>${esc(ch.why)}</p><p><b>Effets simulés :</b> confiance ${fmt(ch.effects.trust)}, climat ${fmt(ch.effects.climate)}, performance ${fmt(ch.effects.performance)}, équité ${fmt(ch.effects.fairness)}.</p><p class="muted">Concept mobilisé : ${esc(ch.skill)}. Les jauges sont une mécanique de jeu, pas des prédictions scientifiques.</p><button class="btn primary" onclick="renderStory()">${S.chapter>=chapters.length?'Voir le bilan de campagne':'Continuer →'}</button></div>`;renderSide();updateHUD();}
+function fmt(n){return n>0?"+"+n:String(n)}
+function eventText(c,ch){let impacts=[];if(ch.effects.trust<0)impacts.push("la confiance s'effrite");if(ch.effects.trust>5)impacts.push("la confiance progresse");if(ch.effects.climate<0)impacts.push("le climat se tend");if(ch.effects.climate>5)impacts.push("la coopération respire");if(ch.effects.fairness<0)impacts.push("l'équité est contestée");if(ch.effects.fairness>5)impacts.push("les critères paraissent plus défendables");return `${c.person} retient cette décision : ${impacts.join(", ")||"les effets restent mitigés"}.`;}
+function showJournal(){go("profile");}
+function renderProfile(){updateHUD();document.getElementById("pDecisions").textContent=S.decisions;document.getElementById("pCorrect").textContent=S.correct;document.getElementById("pXP").textContent=S.xp;document.getElementById("pDays").textContent=S.day;document.getElementById("profileMeters").innerHTML=Object.entries(S.skills).map(([k,v])=>`<div class="meterline"><label>${esc(k[0].toUpperCase()+k.slice(1))}</label><div class="bar"><span style="width:${Math.min(100,v*20)}%"></span></div><b>${v}</b></div>`).join("");document.getElementById("profilePeople").innerHTML=Object.values(S.people).map(p=>`<div class="person" style="margin:12px 0"><div class="avatar">${p.avatar}</div><div><h4>${esc(p.name)}</h4><div class="small muted">${esc(p.note)}</div><div class="tag">${mood(p.trust)}</div></div></div>`).join("");document.getElementById("fullJournal").innerHTML=S.journal.length?S.journal.slice().reverse().map(j=>`<div class="answerline"><b>Jour ${j.day} · ${esc(j.title)}</b><p>${esc(j.choice)}</p><span class="muted">${esc(j.why)}</span></div>`).join(""):'<p class="muted small">Aucune décision enregistrée pour le moment.</p>'; }
+const labs=[
+{id:"labBias",feedback:"labBiasFeedback",correct:1,skill:"analyse",xp:12,opts:["Biais d'ancrage","Biais de confirmation","Effet de halo"],why:"Le manager sélectionne les éléments qui confirment son jugement initial et minimise les éléments contradictoires. Pour le contrer, rechercher activement des preuves qui pourraient invalider l'hypothèse."},
+{id:"labFeedback",feedback:"labFeedbackFeedback",correct:1,skill:"feedback",xp:12,opts:["« Tu es toujours désorganisé, fais un effort. »","« Les deux livrables sont arrivés après l'échéance. Qu'est-ce qui a bloqué et quel plan permet de tenir la prochaine date ? »","« Ce n'est pas grave, oublions ça. »"],why:"La formulation décrit des faits observables, ouvre l'exploration des obstacles et construit une prochaine étape. Elle évite d'étiqueter la personne."},
+{id:"labVoice",feedback:"labVoiceFeedback",correct:2,skill:"procédurale",xp:12,opts:["Le directeur choisit seul et annonce le résultat.","Chaque équipe vote, le résultat s'impose sans autre analyse.","Chaque équipe présente ses éléments; les critères sont explicites et la décision motivée."],why:"La participation permet de faire remonter des informations, mais la décision doit aussi s'appuyer sur des critères pertinents et être expliquée."},
+{id:"labListen",feedback:"labListenFeedback",correct:0,skill:"écoute",xp:12,opts:["« Tu as l'impression que ton avis ne change rien. Peux-tu me raconter un exemple précis ? »","« Ce n'est pas vrai, nous sommes toujours ouverts. »","« Si tu n'es pas d'accord, écris à la direction. »"],why:"La reformulation vérifie la compréhension et la question ouverte invite à préciser l'expérience, sans promettre que la personne obtiendra ce qu'elle souhaite."}
+];
+function renderLab(){labs.forEach(l=>{let el=document.getElementById(l.id);el.innerHTML=l.opts.map((o,i)=>`<button class="option" onclick="labAnswer('${l.id}',${i})"><span class="letter">${String.fromCharCode(65+i)}</span><span>${esc(o)}</span></button>`).join("");document.getElementById(l.feedback).innerHTML=S.labDone.includes(l.id)?'<div class="feedback"><h4>Défi déjà validé dans cette partie</h4><p>Tu peux le refaire pour réviser, mais l’XP ne sera accordée qu’une fois.</p></div>':"";});}
+function labAnswer(id,i){let l=labs.find(x=>x.id===id),out=document.getElementById(l.feedback),correct=i===l.correct,first=!S.labDone.includes(id);if(first){S.labDone.push(id);S.xp+=correct?l.xp:3;S.coins+=correct?3:1;if(correct)S.correct++;S.skills[l.skill]=(S.skills[l.skill]||0)+(correct?1:0);saveGame();updateHUD();}out.innerHTML=`<div class="feedback ${correct?'':'bad'}"><h4>${correct?'✓ Bien vu':'↻ À retravailler'} ${first?(correct?'+12 XP':'+3 XP'):'· Révision'}</h4><p>${esc(l.why)}</p></div>`;document.getElementById(id).querySelectorAll("button").forEach((b,j)=>{b.disabled=true;if(j===l.correct)b.style.borderColor="var(--green)";});}
+function renderCodex(){document.getElementById("codexCards").innerHTML=codex.map((x,i)=>`<div class="card ${i%3===0?'span12':'span6'}"><div class="eyebrow">Entrée ${String(i+1).padStart(2,'0')}</div><h3>${esc(x[0])}</h3><div class="tag">${esc(x[1])}</div><p class="small muted">${esc(x[2])}</p></div>`).join("");}
+function exportSave(){let blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="justice-empire-neuroverse-save.json";a.click();URL.revokeObjectURL(url);toast("Export de sauvegarde lancé.");}
+function importSave(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(x.v!==1||!x.stats||!x.people)throw Error();S={...defaults(),...x};saveGame();renderHome();renderProfile();toast("Sauvegarde importée ✓");}catch(err){toast("Fichier de sauvegarde invalide.");}};r.readAsText(f);e.target.value="";}
+function resetGame(){if(confirm("Effacer la partie locale et recommencer depuis le début ?")){S=defaults();saveGame();renderHome();renderStory();renderProfile();toast("Nouvelle partie créée.");go("home");}}
+function startNew(){if((S.decisions||S.xp)&&!confirm("Démarrer une nouvelle partie ? L'ancienne progression sera remplacée dans ce navigateur."))return;S=defaults();saveGame();renderHome();renderStory();toast("Nouvelle campagne : à toi de jouer.");go("story");}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+load();renderHome();renderStory();renderLab();renderCodex();renderProfile();updateHUD();
+</script>
+
+<!-- MODULE AJOUTÉ : ENQUÊTE SUR LES INJUSTICES -->
+<style>
+#justice-detective { margin: 34px auto; max-width: 1050px; padding: 24px; border-radius: 22px; background: linear-gradient(135deg,#111827,#1f2937); color:#f9fafb; box-shadow:0 18px 45px rgba(0,0,0,.22); font-family:inherit; }
+#justice-detective * { box-sizing:border-box; }
+#justice-detective .jd-kicker { text-transform:uppercase; letter-spacing:.14em; font-size:.75rem; color:#a5b4fc; font-weight:800; }
+#justice-detective h2 { font-size:clamp(1.5rem,3vw,2.2rem); margin:.4rem 0 .65rem; color:#fff; }
+#justice-detective .jd-intro { color:#d1d5db; line-height:1.6; }
+#justice-detective .jd-top { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; }
+#justice-detective .jd-pill { background:#374151; border:1px solid #4b5563; padding:8px 12px; border-radius:999px; font-size:.9rem; }
+#justice-detective .jd-card { background:#fff; color:#111827; border-radius:18px; padding:clamp(18px,3vw,28px); margin-top:20px; }
+#justice-detective .jd-scene { font-size:1.1rem; line-height:1.75; }
+#justice-detective .jd-question { font-weight:800; margin:18px 0 12px; }
+#justice-detective .jd-options { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
+#justice-detective .jd-option { text-align:left; border:2px solid #e5e7eb; border-radius:13px; padding:13px 14px; background:#f9fafb; color:#111827; cursor:pointer; font:inherit; transition:.15s; }
+#justice-detective .jd-option:hover { border-color:#818cf8; background:#eef2ff; transform:translateY(-1px); }
+#justice-detective .jd-option:focus-visible, #justice-detective button:focus-visible { outline:3px solid #fbbf24; outline-offset:3px; }
+#justice-detective .jd-option strong { display:block; margin-bottom:4px; }
+#justice-detective .jd-option span { font-size:.88rem; color:#4b5563; }
+#justice-detective .jd-feedback { margin-top:16px; padding:15px; border-radius:12px; line-height:1.6; display:none; }
+#justice-detective .jd-feedback.good { display:block; background:#dcfce7; color:#14532d; }
+#justice-detective .jd-feedback.bad { display:block; background:#ffedd5; color:#7c2d12; }
+#justice-detective .jd-controls { display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+#justice-detective .jd-btn { border:0; border-radius:11px; padding:11px 16px; cursor:pointer; font:inherit; font-weight:800; }
+#justice-detective .jd-primary { background:#818cf8; color:#111827; }
+#justice-detective .jd-secondary { background:#374151; color:#fff; border:1px solid #6b7280; }
+#justice-detective .jd-progress { height:8px; background:#374151; border-radius:99px; overflow:hidden; flex:1; min-width:120px; }
+#justice-detective .jd-progress > div { height:100%; width:0%; background:#a5b4fc; transition:width .25s; }
+#justice-detective .jd-result { margin-top:18px; background:#312e81; padding:18px; border-radius:14px; display:none; line-height:1.6; }
+#justice-detective .jd-small { color:#9ca3af; font-size:.85rem; margin-top:12px; }
+</style>
+
+<section id="justice-detective" aria-labelledby="jd-title">
+  <div class="jd-top">
+    <div>
+      <div class="jd-kicker">Mode enquête · RH</div>
+      <h2 id="jd-title">Détective de l’injustice</h2>
+    </div>
+    <div class="jd-pill" id="jd-score" aria-live="polite">Score : 0 / 0</div>
+  </div>
+  <p class="jd-intro">Un patron prend des décisions. Lis chaque scène, repère ce qui pose problème, puis identifie le type d’injustice dominant. Attention : plusieurs problèmes peuvent coexister, mais une seule réponse correspond le mieux à l’indice central du scénario.</p>
+  <div class="jd-top" style="margin-top:15px">
+    <span class="jd-pill" id="jd-count">Scénario 1</span>
+    <div class="jd-progress" role="progressbar" aria-label="Progression des scénarios" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="jd-progress"><div id="jd-progress-fill"></div></div>
+  </div>
+  <div class="jd-card" id="jd-card">
+    <div class="jd-kicker" style="color:#6366f1" id="jd-category">Dossier d’enquête</div>
+    <p class="jd-scene" id="jd-scene"></p>
+    <p class="jd-question">Quel type d’injustice est principalement illustré ?</p>
+    <div class="jd-options" id="jd-options">
+      <button class="jd-option" data-answer="distributive"><strong>1. Injustice distributive</strong><span>Le résultat ou la répartition est injuste.</span></button>
+      <button class="jd-option" data-answer="procedurale"><strong>2. Injustice procédurale</strong><span>La méthode, les règles ou la décision sont injustes.</span></button>
+      <button class="jd-option" data-answer="interpersonnelle"><strong>3. Injustice interpersonnelle</strong><span>La personne est traitée sans respect ou dignité.</span></button>
+      <button class="jd-option" data-answer="informationnelle"><strong>4. Injustice informationnelle</strong><span>Les explications sont absentes, tardives ou trompeuses.</span></button>
+    </div>
+    <div class="jd-feedback" id="jd-feedback" role="status" aria-live="polite"></div>
+    <div class="jd-controls">
+      <button class="jd-btn jd-primary" id="jd-next" style="display:none">Scénario suivant →</button>
+      <button class="jd-btn jd-secondary" id="jd-restart" style="display:none">Recommencer l’enquête</button>
+    </div>
+    <div class="jd-small">Astuce : demande-toi si le problème concerne surtout le « quoi », le « comment », le « comment on me traite » ou le « pourquoi on ne m’explique rien ».</div>
+  </div>
+  <div class="jd-result" id="jd-result" aria-live="polite"></div>
+</section>
+
+<script>
+(function () {
+  const root = document.getElementById('justice-detective');
+  if (!root || root.dataset.ready === 'true') return;
+  root.dataset.ready = 'true';
+
+  const cases = [
+    {
+      tag: 'Dossier 01 · La promotion',
+      scene: 'Nadia et Thomas ont des résultats comparables et une expérience similaire. Pourtant, le patron attribue la promotion à Thomas, qui reçoit un salaire plus élevé, sans critère objectif qui justifie cet écart.',
+      answer: 'distributive',
+      why: 'Le cœur du problème est la répartition du résultat : la promotion et la rémunération ne semblent pas attribuées de manière équitable au regard des contributions.'
+    },
+    {
+      tag: 'Dossier 02 · La règle secrète',
+      scene: 'Le patron choisit son prochain chef d’équipe selon une règle qu’il change au dernier moment. Certains candidats n’ont pas pu se présenter, et personne n’a la possibilité de demander une révision de la décision.',
+      answer: 'procedurale',
+      why: 'Le processus de décision est biaisé et incohérent. Des critères stables, une possibilité de faire entendre sa voix et un recours sont des éléments importants de justice procédurale.'
+    },
+    {
+      tag: 'Dossier 03 · La réunion humiliante',
+      scene: 'Lors d’une réunion, le patron se moque de l’erreur d’un employé devant toute l’équipe, l’interrompt constamment et lui dit qu’il est « incapable de réfléchir ».',
+      answer: 'interpersonnelle',
+      why: 'L’employé est traité avec humiliation et manque de respect. C’est l’indice central de l’injustice interpersonnelle.'
+    },
+    {
+      tag: 'Dossier 04 · Le changement inexpliqué',
+      scene: 'Le patron retire à une employée la possibilité de télétravailler. Il refuse de lui expliquer les raisons de ce changement et répond seulement : « C’est comme ça, ne pose pas de questions. »',
+      answer: 'informationnelle',
+      why: 'Le problème dominant est l’absence d’explication adéquate. Une décision difficile peut être mieux acceptée lorsqu’elle est expliquée de façon honnête, claire et suffisamment détaillée.'
+    },
+    {
+      tag: 'Dossier 05 · Les critères à géométrie variable',
+      scene: 'Pour obtenir une prime, toute l’équipe devait atteindre un objectif annoncé à l’avance. Une fois l’objectif atteint, le patron ajoute une nouvelle condition qui n’avait jamais été communiquée et refuse les primes.',
+      answer: 'procedurale',
+      why: 'La règle est modifiée après coup : le processus manque de cohérence et de prévisibilité. L’absence d’annonce peut aussi créer un problème informationnel, mais l’indice principal est ici la procédure changée après l’action.'
+    },
+    {
+      tag: 'Dossier 06 · La mauvaise nouvelle',
+      scene: 'Le patron annonce à Marc qu’il n’aura pas d’augmentation cette année. Il lui parle calmement et poliment, mais ne donne aucune raison, aucun critère et aucune information sur la façon dont la décision a été prise.',
+      answer: 'informationnelle',
+      why: 'Le ton est respectueux, donc l’injustice interpersonnelle n’est pas l’indice principal. Ce qui manque, ce sont les explications et les informations permettant de comprendre la décision.'
+    },
+    {
+      tag: 'Dossier 07 · Deux poids, deux mesures',
+      scene: 'Deux employés commettent la même erreur dans des circonstances similaires. Le patron sanctionne sévèrement l’un, mais ignore l’erreur de son employé préféré, sans raison pertinente.',
+      answer: 'procedurale',
+      why: 'La règle n’est pas appliquée de façon cohérente et impartiale. Le problème central concerne la façon dont les décisions sont prises et appliquées.'
+    },
+    {
+      tag: 'Dossier 08 · Le bonus dérisoire',
+      scene: 'Une équipe a dépassé ses objectifs et assumé une charge de travail supplémentaire. Le patron distribue pourtant une prime symbolique, tandis qu’une autre équipe ayant beaucoup moins contribué reçoit une prime bien plus importante.',
+      answer: 'distributive',
+      why: 'Le scénario met l’accent sur le déséquilibre entre contributions et récompenses. C’est une question de justice distributive.'
+    },
+    {
+      tag: 'Dossier 09 · Le faux prétexte',
+      scene: 'Le patron refuse une demande de formation en affirmant que le budget a été supprimé. L’employée découvre ensuite que le budget existe toujours et que plusieurs collègues ont obtenu la même formation.',
+      answer: 'informationnelle',
+      why: 'Le patron fournit une explication trompeuse. L’information n’est ni honnête ni fiable, ce qui caractérise l’injustice informationnelle.'
+    },
+    {
+      tag: 'Dossier 10 · Pas de droit de réponse',
+      scene: 'Avant de sanctionner un salarié pour une plainte, le patron ne vérifie pas les faits et ne lui permet pas de donner sa version. Il décide immédiatement sur la base d’une seule accusation.',
+      answer: 'procedurale',
+      why: 'La personne n’a pas de voix dans le processus, les faits ne sont pas vérifiés et la décision manque d’impartialité. Ce sont des signaux de justice procédurale.'
+    }
+  ];
+
+  const labels = {
+    distributive: 'Injustice distributive',
+    procedurale: 'Injustice procédurale',
+    interpersonnelle: 'Injustice interpersonnelle',
+    informationnelle: 'Injustice informationnelle'
+  };
+  let order = cases.map((_, i) => i);
+  let current = 0, score = 0, answered = false, history = [];
+
+  const $ = id => document.getElementById(id);
+  const shuffle = arr => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  };
+
+  function render() {
+    const c = cases[order[current]];
+    $('jd-category').textContent = c.tag;
+    $('jd-scene').textContent = c.scene;
+    $('jd-count').textContent = 'Scénario ' + (current + 1) + ' / ' + cases.length;
+    $('jd-score').textContent = 'Score : ' + score + ' / ' + history.length;
+    $('jd-progress-fill').style.width = (current / cases.length * 100) + '%';
+    $('jd-progress').setAttribute('aria-valuenow', String(Math.round(current / cases.length * 100)));
+    $('jd-feedback').className = 'jd-feedback';
+    $('jd-feedback').textContent = '';
+    $('jd-next').style.display = 'none';
+    $('jd-restart').style.display = 'none';
+    $('jd-result').style.display = 'none';
+    $('jd-options').querySelectorAll('button').forEach(b => {
+      b.disabled = false;
+      b.style.opacity = '1';
+      b.style.borderColor = '#e5e7eb';
+      b.style.background = '#f9fafb';
+    });
+    answered = false;
+  }
+
+  function choose(answer) {
+    if (answered) return;
+    answered = true;
+    const c = cases[order[current]];
+    const correct = answer === c.answer;
+    if (correct) score++;
+    history.push({ tag: c.tag, answer, expected: c.answer, correct });
+    $('jd-score').textContent = 'Score : ' + score + ' / ' + history.length;
+    const feedback = $('jd-feedback');
+    feedback.className = 'jd-feedback ' + (correct ? 'good' : 'bad');
+    feedback.innerHTML = '<strong>' + (correct ? 'Bonne analyse !' : 'Pas tout à fait.') + '</strong> Type attendu : <strong>' + labels[c.answer] + '.</strong><br>' + c.why;
+    $('jd-options').querySelectorAll('button').forEach(b => {
+      b.disabled = true;
+      if (b.dataset.answer === c.answer) {
+        b.style.borderColor = '#16a34a';
+        b.style.background = '#dcfce7';
+      } else if (b.dataset.answer === answer && !correct) {
+        b.style.borderColor = '#ea580c';
+        b.style.background = '#ffedd5';
+      } else b.style.opacity = '.65';
+    });
+    $('jd-next').style.display = current < cases.length - 1 ? 'inline-block' : 'none';
+    if (current === cases.length - 1) finish();
+  }
+
+  function finish() {
+    $('jd-progress-fill').style.width = '100%';
+    $('jd-progress').setAttribute('aria-valuenow', '100');
+    $('jd-restart').style.display = 'inline-block';
+    const pct = Math.round(score / cases.length * 100);
+    const result = $('jd-result');
+    result.style.display = 'block';
+    let msg = pct >= 80 ? 'Excellent diagnostic : tu repères bien les indices de justice organisationnelle.' :
+      pct >= 60 ? 'Bon début d’enquête. Revois les indices qui distinguent la procédure des explications.' :
+      'Enquête à poursuivre : concentre-toi sur la nature précise du problème dans chaque scène.';
+    result.innerHTML = '<strong>Enquête terminée : ' + score + ' / ' + cases.length + ' (' + pct + '%)</strong><br>' + msg +
+      '<br><br><strong>Repères express</strong><br>• Distributive : qui reçoit quoi ?<br>• Procédurale : comment la décision est-elle prise ?<br>• Interpersonnelle : avec quel respect la personne est-elle traitée ?<br>• Informationnelle : quelles explications sont données ?';
+    $('jd-next').style.display = 'none';
+  }
+
+  $('jd-options').addEventListener('click', e => {
+    const b = e.target.closest('button[data-answer]');
+    if (b) choose(b.dataset.answer);
+  });
+  $('jd-next').addEventListener('click', () => { if (current < cases.length - 1) { current++; render(); } });
+  $('jd-restart').addEventListener('click', () => {
+    current = 0; score = 0; history = []; order = shuffle(cases.map((_, i) => i)); render();
+  });
+  order = shuffle(order);
+  render();
+})();
+</script>
+
+</body>
+</html>
